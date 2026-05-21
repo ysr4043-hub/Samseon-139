@@ -15,41 +15,54 @@
 <script type="application/json" id="saved-state"></script>
 <style>
   :root{
-    --bg:#F6F2EA; --paper:#FBF8F2; --ink:#16213A; --ink-2:#4A5570; --ink-3:#8C92A6;
-    --line:#E2DBCC; --line-2:#EFE9DC;
-    --gold:#B08838; --gold-soft:#EFE3C7;
+    --bg:#FBF7EE; --paper:#FFFDF6; --ink:#003B5C; --ink-2:#3A5A75; --ink-3:#7F8C9D;
+    --line:#DDD3BD; --line-2:#E8DFCB;
+    --gold:#C9A961; --gold-soft:#F0E3C2; --gold-dark:#7A6B40;
     --red:#9E2A2B; --red-soft:#F5E1E0;
-    --green:#3B6E4A; --green-soft:#E2EDE4;
-    --blue:#26456E; --blue-soft:#DDE5F0;
+    --green:#3B6E4A; --green-soft:#DDE6DA;
+    --blue:#003B5C; --blue-soft:#D5DDE7;
     --gray:#7A8194; --gray-soft:#E8E6DF;
-    --shadow:0 1px 0 #fff inset, 0 1px 2px rgba(20,30,55,.04), 0 8px 24px -12px rgba(20,30,55,.12);
+    --shadow:0 1px 0 #fff inset, 0 1px 2px rgba(0,59,92,.05), 0 8px 24px -12px rgba(0,59,92,.15);
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans KR",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:60px}
   .wrap{max-width:1240px;margin:0 auto;padding:24px 20px 0}
-  .head{padding-bottom:14px}
-  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
-  h1{font-family:"Noto Serif KR",serif;font-weight:700;font-size:24px;margin:6px 0 0;letter-spacing:-.01em;line-height:1.2}
+  .head{padding:4px 0 16px;position:relative;border-bottom:2px solid var(--ink);margin-bottom:6px}
+  .head::after{content:"";position:absolute;left:0;bottom:-2px;width:32%;height:2px;background:var(--gold)}
+  .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dark);font-weight:600;display:inline-flex;align-items:center;gap:6px}
+  .eyebrow svg{stroke:var(--gold);flex-shrink:0}
+  h1{font-family:"Noto Serif KR",serif;font-weight:700;font-size:25px;margin:8px 0 4px;letter-spacing:-.015em;line-height:1.2;color:var(--ink)}
+  .h-sub{font-family:"Noto Serif KR",serif;font-size:12.5px;color:var(--gold-dark);font-style:italic;letter-spacing:.02em;margin-top:2px}
   .tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;background:var(--bg);padding-top:2px}
-  .tabs button{background:none;border:none;padding:12px 16px;font:inherit;font-size:13.5px;font-weight:600;color:var(--ink-3);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:color .12s;white-space:nowrap}
+  .tabs button{background:none;border:none;padding:12px 16px;font:inherit;font-size:13.5px;font-weight:600;color:var(--gold-dark);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:color .12s;white-space:nowrap;font-family:"Noto Serif KR",serif}
   .tabs button:hover{color:var(--ink-2)}
   .tabs button.active{color:var(--ink);border-bottom-color:var(--gold)}
   @media (max-width:560px){.tabs button{padding:11px 9px;font-size:11.5px}}
   .tab-panel{display:none}
   .tab-panel.active{display:block}
   .section{margin-top:24px}
-  .section-title{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;flex-wrap:wrap}
-  .section-title h2{font-family:"Noto Serif KR",serif;font-weight:700;font-size:18px;margin:0}
-  .section-title .desc{color:var(--ink-3);font-size:12.5px}
-  .dash-h{font-family:"Noto Serif KR",serif;font-weight:700;font-size:15px;margin:24px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
-  .scenario{color:var(--ink-2);font-size:13px;line-height:1.65;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:13px 16px}
-  .scenario b{color:var(--ink)}
+  .section-title{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .section-title h2{font-family:"Noto Serif KR",serif;font-weight:700;font-size:18px;margin:0;color:var(--ink);position:relative;padding-left:14px}
+  .section-title h2::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:18px;background:var(--gold)}
+  .section-title .desc{color:var(--gold-dark);font-size:12.5px;font-style:italic}
+  .dash-h{font-family:"Noto Serif KR",serif;font-weight:700;font-size:15px;margin:24px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line);color:var(--ink);position:relative;padding-left:14px}
+  .dash-h::before{content:"";position:absolute;left:0;top:4px;width:4px;height:16px;background:var(--gold)}
+  .scenario{color:var(--ink-2);font-size:13px;line-height:1.7;background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:6px;padding:14px 18px;font-family:"Noto Serif KR",serif}
+  .scenario b{color:var(--ink);font-weight:700}
   .controls{display:grid;gap:14px;grid-template-columns:repeat(4,1fr)}
   @media (max-width:1100px){.controls{grid-template-columns:repeat(2,1fr)}}
   @media (max-width:560px){.controls{grid-template-columns:1fr}}
-  .ctl-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
-  .ctl-card h3{margin:0 0 12px;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .ctl-card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow);border-top:2px solid var(--gold)}
+  .ctl-card h3{margin:0 0 12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-dark);font-weight:600;font-family:"Noto Serif KR",serif}
+  .loan-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:13px}
+  .loan-row .ln-label{flex:1;font-family:"Noto Serif KR",serif;color:var(--ink);font-weight:500;font-size:13px}
+  .loan-row input.ln-name{flex:1;min-width:0;font-size:13.5px;padding:6px 8px;font-family:"Noto Serif KR",serif}
+  .loan-row input.ln-rate{width:64px;text-align:right;font-family:"JetBrains Mono",monospace;font-size:13px;padding:6px 8px}
+  .loan-row .ln-pct{font-size:12px;color:var(--gold-dark)}
+  .loan-row .ln-del{background:transparent;border:1px solid var(--line);color:var(--red);border-radius:3px;width:24px;height:24px;cursor:pointer;font-size:13px;line-height:1;padding:0;flex-shrink:0}
+  .loan-row .ln-del:hover{background:var(--red-soft)}
+  .loan-row .ln-spacer{width:24px;flex-shrink:0}
   .field{margin-bottom:13px}
   .field:last-child{margin-bottom:0}
   .field label{display:block;font-size:12px;color:var(--ink-2);font-weight:500;margin-bottom:5px}
@@ -64,16 +77,16 @@
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--ink);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.2)}
   input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--ink);cursor:pointer}
   .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-  .chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 11px;font:inherit;font-size:12px;cursor:pointer;color:var(--ink-2);transition:all .12s}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:3px;padding:5px 11px;font:inherit;font-size:12px;cursor:pointer;color:var(--ink-2);transition:all .12s;font-family:"Noto Serif KR",serif}
   .chip:hover{border-color:var(--ink);color:var(--ink)}
-  .chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
-  .btn{appearance:none;background:var(--ink);color:#fff;border:1px solid var(--ink);padding:9px 15px;border-radius:10px;font:inherit;font-size:13px;font-weight:500;cursor:pointer;transition:transform .08s,box-shadow .15s}
-  .btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px -4px rgba(20,30,55,.4)}
-  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
-  .btn.ghost:hover{background:var(--paper)}
-  .btn.sm{padding:6px 12px;font-size:12px;border-radius:8px}
+  .chip.active{background:var(--ink);color:var(--gold);border-color:var(--ink)}
+  .btn{appearance:none;background:var(--ink);color:#FBF7EE;border:1px solid var(--ink);padding:9px 16px;border-radius:4px;font:inherit;font-size:13px;font-weight:500;cursor:pointer;transition:transform .08s,box-shadow .15s;letter-spacing:.02em}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px -4px rgba(0,59,92,.4)}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--gold-dark)}
+  .btn.ghost:hover{background:var(--gold-soft);border-color:var(--ink)}
+  .btn.sm{padding:6px 12px;font-size:12px;border-radius:3px}
   .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-  .explain{background:var(--blue-soft);border:1px solid #C9D5E6;border-radius:12px;padding:12px 16px;font-size:12.5px;color:var(--ink-2);line-height:1.75;margin-bottom:14px}
+  .explain{background:#F5EAD0;border:1px solid var(--gold-soft);border-left:3px solid var(--gold);border-radius:6px;padding:13px 17px;font-size:12.5px;color:var(--ink-2);line-height:1.75;margin-bottom:14px;font-family:"Noto Serif KR",serif}
   .explain b{color:var(--ink)}
   .explain .in{color:var(--green);font-weight:600}
   .explain .out{color:var(--red);font-weight:600}
@@ -86,19 +99,19 @@
   table.tranche tbody td{padding:6px 6px;border-bottom:1px solid var(--line-2)}
   table.tranche tbody tr:last-child td{border-bottom:none}
   table.tranche tbody td.no{padding:6px 4px 6px 8px;font-weight:700;color:var(--blue);font-size:13px;width:50px;text-align:center}
-  table.tranche tbody td.cum{text-align:right;font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--ink);background:#F4EFE3;white-space:nowrap;font-size:13px}
+  table.tranche tbody td.cum{text-align:right;font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--ink);background:#F5EAD0;white-space:nowrap;font-size:13px}
   table.tranche tbody td.int{text-align:right;font-family:"JetBrains Mono",monospace;color:var(--red);white-space:nowrap;font-size:13px}
   table.tranche tbody td.del{width:40px;text-align:center}
   table.tranche input{padding:6px 8px;font-size:13px;border-radius:7px}
   .tr-date{width:144px} .tr-amt{width:160px}
-  table.tranche tfoot td{padding:9px 8px;background:#F2EDE2;font-weight:700;font-size:13px;font-family:"JetBrains Mono",monospace;text-align:right;border-top:2px solid var(--line);color:var(--blue);white-space:nowrap}
+  table.tranche tfoot td{padding:9px 8px;background:#F0E3C2;font-weight:700;font-size:13px;font-family:"JetBrains Mono",monospace;text-align:right;border-top:2px solid var(--line);color:var(--blue);white-space:nowrap}
   table.tranche tfoot td.l{text-align:left;font-family:"IBM Plex Sans KR";color:var(--ink)}
   table.tranche tfoot td.peak{color:var(--red);font-size:12.5px}
   .tranche-scroll{overflow-x:auto;border-radius:10px}
   /* 거래내역 */
   .ledger-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);background:var(--paper)}
   table.book{width:100%;border-collapse:collapse;font-size:12.5px;min-width:920px}
-  table.book thead th{background:#1A2B4A;color:#EBE6DA;text-align:right;padding:10px 8px;font-weight:600;font-size:11px;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.book thead th{background:#003B5C;color:#F0E3C2;text-align:right;padding:10px 8px;font-weight:600;font-size:11px;border-bottom:1px solid var(--line);white-space:nowrap}
   table.book thead th.l{text-align:left}
   table.book thead th.c{text-align:center}
   table.book tbody td{padding:6px 7px;border-bottom:1px solid var(--line-2);vertical-align:middle}
@@ -108,12 +121,12 @@
   .bk-amt{width:138px} .bk-bal{width:116px} .bk-lbal{width:116px} .bk-del{width:38px;text-align:center}
   table.book input.in{color:var(--green);font-weight:600}
   table.book input.out{color:var(--red);font-weight:600}
-  .bal-cell{text-align:right;font-family:"JetBrains Mono",monospace;font-weight:600;font-size:13px;color:var(--ink);background:#F4EFE3;white-space:nowrap}
+  .bal-cell{text-align:right;font-family:"JetBrains Mono",monospace;font-weight:600;font-size:13px;color:var(--ink);background:#F5EAD0;white-space:nowrap}
   .lbal-cell{text-align:right;font-family:"JetBrains Mono",monospace;font-weight:600;font-size:13px;color:#4A5570;background:#EDE7DA;white-space:nowrap}
   .lbal-cell.flat{color:var(--ink-3);font-weight:400}
   .del-row{background:transparent;border:1px solid var(--line);color:var(--red);border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:14px;line-height:1}
   .del-row:hover{background:var(--red-soft)}
-  table.book tfoot td{padding:9px 8px;background:#F2EDE2;font-weight:700;font-size:12px;font-family:"JetBrains Mono",monospace;text-align:right;border-top:2px solid var(--line);white-space:nowrap}
+  table.book tfoot td{padding:9px 8px;background:#F0E3C2;font-weight:700;font-size:12px;font-family:"JetBrains Mono",monospace;text-align:right;border-top:2px solid var(--line);white-space:nowrap}
   table.book tfoot td.l{text-align:left;font-family:"IBM Plex Sans KR",sans-serif}
   .ft-in{color:var(--green)} .ft-out{color:var(--red)}
   /* 대출 현황 */
@@ -138,34 +151,37 @@
   .loan-card.new{border-left:3px solid var(--blue)}
   /* tranche progress mini-bar */
   .tr-prog{display:flex;gap:2px;margin-top:6px}
-  .tr-prog .seg{height:6px;flex:1;border-radius:2px;background:#E2DBCC}
+  .tr-prog .seg{height:6px;flex:1;border-radius:2px;background:#E8DFCB}
   .tr-prog .seg.done{background:var(--blue)}
   /* 분담 큰 카드 */
   .cards{display:grid;gap:14px;grid-template-columns:repeat(3,1fr)}
   @media (max-width:860px){.cards{grid-template-columns:1fr}}
-  .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
-  .card.big.chan{background:linear-gradient(180deg,#FBF6E8,#FBF8F2);border-color:var(--gold-soft)}
-  .card.big.sung{background:linear-gradient(180deg,#E9EFF6,#FBF8F2);border-color:#C9D5E6}
-  .card.big.total{background:linear-gradient(180deg,#1A2B4A,#26456E);border-color:#1A2B4A;color:#fff}
-  .card h3{margin:0 0 10px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
-  .card.total h3{color:#A9B6CC}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px 20px;box-shadow:var(--shadow)}
+  .card.big.chan{background:#FBF4DC;border-color:var(--gold-soft);border-top:3px solid var(--gold)}
+  .card.big.sung{background:#EEF2F7;border-color:#C9D5E6;border-top:3px solid var(--blue)}
+  .card.big.total{background:#003B5C;border-color:#003B5C;color:#FBF7EE;position:relative;overflow:hidden}
+  .card.big.total::before{content:"";position:absolute;top:0;right:18px;width:44px;height:3px;background:var(--gold)}
+  .card.big.total::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:linear-gradient(90deg,var(--gold) 35%,transparent 35%)}
+  .card h3{margin:0 0 10px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-dark);font-weight:600;font-family:"Noto Serif KR",serif}
+  .card.total h3{color:var(--gold)}
   .dual{display:grid;gap:8px;margin-bottom:8px}
   .dual-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
   .dual-lbl{font-size:11px;color:var(--ink-3);letter-spacing:.03em;font-weight:500}
-  .card.total .dual-lbl{color:#A9B6CC}
+  .card.total .dual-lbl{color:#C9C1AE}
   .dual-num{font-family:"Noto Serif KR",serif;font-weight:700;font-size:16px;letter-spacing:-.01em;color:var(--ink)}
-  .card.total .dual-num{color:#fff}
-  .dual-row.primary .dual-num{font-size:22px}
+  .card.total .dual-num{color:#FBF7EE}
+  .dual-row.primary .dual-num{font-size:23px}
   .dual-row.primary{border-top:1px dashed var(--line);padding-top:6px}
-  .card.total .dual-row.primary{border-top-color:#3D567C}
-  .card .sub{font-size:11.5px;color:var(--ink-3);margin:4px 0 6px;font-family:"JetBrains Mono",monospace}
-  .card.total .sub{color:#A9B6CC}
+  .card.total .dual-row.primary{border-top-color:#1F5878}
+  .card.total .dual-row.primary .dual-num{color:var(--gold)}
+  .card .sub{font-size:11.5px;color:var(--gold-dark);margin:4px 0 6px;font-family:"JetBrains Mono",monospace;font-style:italic}
+  .card.total .sub{color:#C9C1AE}
   .br{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;display:grid;gap:5px}
-  .card.total .br{border-top-color:#3D567C}
+  .card.total .br{border-top-color:#1F5878}
   .br-row{display:flex;justify-content:space-between;color:var(--ink-2)}
-  .card.total .br-row{color:#C8D0E0}
+  .card.total .br-row{color:#C9C1AE}
   .br-row b{font-family:"JetBrains Mono",monospace;color:var(--ink);font-weight:600}
-  .card.total .br-row b{color:#fff}
+  .card.total .br-row b{color:#FBF7EE}
   .stats{display:grid;gap:12px;grid-template-columns:repeat(4,1fr);margin-top:14px}
   @media (max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}}
   .stat{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:13px 15px;box-shadow:var(--shadow)}
@@ -181,7 +197,7 @@
   /* 월별 상세 */
   .table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);max-height:560px;overflow-y:auto;background:var(--paper)}
   table.detail{width:100%;border-collapse:collapse;font-size:12px;min-width:980px}
-  table.detail thead th{position:sticky;top:0;z-index:2;background:#F2EDE2;text-align:right;padding:8px 9px;font-weight:600;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);border-bottom:1px solid var(--line);white-space:nowrap}
+  table.detail thead th{position:sticky;top:0;z-index:2;background:#F0E3C2;text-align:right;padding:8px 9px;font-weight:600;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);border-bottom:1px solid var(--line);white-space:nowrap}
   table.detail thead th:first-child{text-align:left}
   table.detail tbody td{padding:7px 9px;text-align:right;border-bottom:1px solid var(--line-2);white-space:nowrap;font-family:"JetBrains Mono",monospace}
   table.detail tbody td:first-child{text-align:left;font-family:inherit;position:sticky;left:0;background:inherit}
@@ -192,8 +208,8 @@
   table.detail tbody tr:hover{background:#F5EFDD}
   table.detail tbody tr.year-row td{background:var(--ink);color:#fff;font-weight:600;text-align:left;font-family:inherit;font-size:12px;position:static}
   table.detail tbody tr.subtotal-row td{background:#7A6B40;color:#fff;font-weight:600;font-size:12px;text-align:left;font-family:inherit;letter-spacing:.02em}
-  table.detail tbody tr.total-row td{background:#26456E;color:#fff;font-weight:700;font-size:12.5px;border-bottom:none;position:sticky;bottom:0;z-index:2}
-  table.detail tbody tr.total-row td:first-child{background:#26456E}
+  table.detail tbody tr.total-row td{background:#003B5C;color:#fff;font-weight:700;font-size:12.5px;border-bottom:none;position:sticky;bottom:0;z-index:2}
+  table.detail tbody tr.total-row td:first-child{background:#003B5C}
   .chan-col{color:var(--gold)} .sung-col{color:var(--blue)}
   table.detail tbody tr.total-row .chan-col,table.detail tbody tr.total-row .sung-col{color:#fff}
   table.detail tbody tr.subtotal-row .chan-col,table.detail tbody tr.subtotal-row .sung-col{color:#fff}
@@ -229,14 +245,7 @@
   .hh-card.chan .hh-prog-fill{background:var(--gold)}
   .hh-card.sung .hh-prog-fill{background:var(--blue)}
   .hh-pct{font-size:11.5px;color:var(--ink-3);text-align:right;font-family:"JetBrains Mono",monospace}
-  .balance-box{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
-  .bal-line{font-size:13px;color:var(--ink-2);margin-bottom:10px}
-  .bal-line b{font-family:"JetBrains Mono",monospace;color:var(--ink)}
-  .bal-grid{display:grid;gap:8px;font-size:12.5px;color:var(--ink-2);padding:10px 14px;background:#F4EFE3;border-radius:10px;margin-bottom:12px}
-  .bal-grid b{color:var(--ink);font-family:"JetBrains Mono",monospace}
-  .bal-verdict{font-size:13px;line-height:1.65;padding:12px 14px;border-radius:10px;font-weight:500}
-  .bal-verdict.warn{background:var(--gold-soft);color:#6E5320;border:1px solid #E0CE9E}
-  .bal-verdict.ok{background:var(--green-soft);color:#2C5238;border:1px solid #BCD4C0}
+  .balance-line{font-size:13px;color:var(--ink-2)}
   .hh-items{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
   @media (max-width:680px){.hh-items{grid-template-columns:1fr}}
   .item-col{border:1px solid var(--line);border-radius:12px;background:var(--paper);overflow:hidden}
@@ -249,9 +258,9 @@
   .item-row .it-l .it-m{font-family:"JetBrains Mono",monospace;color:var(--ink-3);font-size:11px;margin-right:6px}
   .item-row .it-a{font-family:"JetBrains Mono",monospace;font-weight:600;white-space:nowrap}
   .item-row.empty{color:var(--ink-3);font-style:italic;justify-content:center}
-  .item-foot{display:flex;justify-content:space-between;padding:10px 16px;font-size:13px;font-weight:700;background:#F2EDE2;border-top:1px solid var(--line)}
+  .item-foot{display:flex;justify-content:space-between;padding:10px 16px;font-size:13px;font-weight:700;background:#F0E3C2;border-top:1px solid var(--line)}
   .item-foot .it-a{font-family:"JetBrains Mono",monospace}
-  .note{font-size:11.5px;color:var(--ink-3);line-height:1.7;margin-top:14px;font-style:italic}
+  .note{font-size:11.5px;color:var(--gold-dark);line-height:1.8;margin-top:14px;font-style:italic;font-family:"Noto Serif KR",serif}
   #tip{position:fixed;background:var(--ink);color:#fff;padding:8px 11px;border-radius:8px;font-size:11.5px;pointer-events:none;opacity:0;transition:opacity .12s;z-index:50;box-shadow:0 8px 24px -6px rgba(0,0,0,.4);font-family:"JetBrains Mono",monospace;line-height:1.6;white-space:nowrap}
   #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:100}
   #toast.show{opacity:1}
@@ -270,8 +279,15 @@
 <body>
 <div class="wrap">
   <header class="head">
-    <span class="eyebrow">삼선동139 · 공동체주택 사업</span>
+    <span class="eyebrow">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="9" width="18" height="12"/>
+        <path d="M3 14h18M9 9V5l3-2 3 2v4M9 14v7M15 14v7M12 9v5"/>
+      </svg>
+      삼선동139 · 공동체주택 사업
+    </span>
     <h1>공동체주택 자금 시뮬레이터</h1>
+    <div class="h-sub">자금 운영 기록과 미래 시나리오</div>
   </header>
   <nav class="tabs">
     <button data-tab="input" class="active">① 입력</button>
@@ -302,13 +318,13 @@
             <div class="hint" id="totalCost-h"></div></div>
         </div>
         <div class="ctl-card">
-          <h3>금리</h3>
-          <div class="field"><label>신축대출 연이율 (%)</label>
-            <input type="text" id="newRate" value="4.5" inputmode="decimal" /></div>
-          <div class="field"><label>기존 대출(하나) 연이율 (%)</label>
-            <input type="text" id="hanaRate" value="4.121" inputmode="decimal" /></div>
-          <div class="field" style="margin-top:18px">
-            <div style="font-size:11px;color:var(--ink-3);letter-spacing:.04em;margin-bottom:4px">신축대출 총액 (기성고 합계)</div>
+          <h3>대출 · 금리</h3>
+          <div id="loan-list"></div>
+          <div style="margin-top:8px;display:flex;justify-content:flex-end">
+            <button class="btn sm ghost" id="loan-add" type="button">+ 대출 추가</button>
+          </div>
+          <div class="field" style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line)">
+            <div style="font-size:11px;color:var(--gold-dark);letter-spacing:.04em;margin-bottom:4px;font-family:'Noto Serif KR',serif">신축대출 총액 (기성고 합계)</div>
             <div style="font-family:'Noto Serif KR',serif;font-weight:700;font-size:18px;color:var(--blue)" id="newLoanSum">—</div>
             <div class="hint" style="font-style:italic">아래 '기성고 스케줄'에서 차수별 편집</div></div>
         </div>
@@ -470,11 +486,11 @@
         <p class="chart-title">월별 분담 부담 (찬희네 + 승민이네 누적)</p>
         <svg id="chart-interest" viewBox="0 0 900 300" preserveAspectRatio="xMidYMid meet"></svg>
         <div class="legend">
-          <span><i style="background:#B08838"></i> 찬희네</span>
-          <span><i style="background:#26456E"></i> 승민이네</span>
-          <span><i style="background:#E2DBCC"></i> 기존대출</span>
-          <span><i style="background:#EFE3C7"></i> 공사 구간</span>
-          <span><i style="background:#E2EDE4"></i> 준공 후</span></div>
+          <span><i style="background:#C9A961"></i> 찬희네</span>
+          <span><i style="background:#003B5C"></i> 승민이네</span>
+          <span><i style="background:#E8DFCB"></i> 기존대출</span>
+          <span><i style="background:#F0E3C2"></i> 공사 구간</span>
+          <span><i style="background:#DDE6DA"></i> 준공 후</span></div>
       </div>
       <div class="chart-box">
         <p class="chart-title">메인 대출(하나+신축 기성고) 잔액 — ▲ 실행 · ● 상환</p>
@@ -517,8 +533,6 @@
       <div class="dash-h">세대별 부담 현황 (총 사업비 대비)</div>
       <div class="hh-cards" id="hh-cards"></div>
       <div class="note" id="hh-note"></div>
-      <div class="dash-h">세대 간 투자 균형</div>
-      <div class="balance-box" id="balance-box"></div>
       <div class="dash-h">세대별 투자 내역</div>
       <div class="hh-items" id="hh-items"></div>
     </div>
@@ -559,16 +573,31 @@ const DEFAULT_LEDGER = [
   {id:"L16", date:"2027-07-15", desc:"4층 나래혜미네 임차보증금",                    source:"임차인",   kind:"기타 입금",  amount:0}
 ];
 
-const SRC = ["찬희네","승민이네","하나은행","희년함께","신축은행","임차인","공동·기타"];
+const SRC_FIXED = ["찬희네","승민이네","임차인","공동·기타"];
 const KIND = ["투자금 입금","대출 실행","대출 상환","대출 이자","사업비 지출","기타 입금"];
 const KIND_SIGN = {"투자금 입금":+1,"대출 실행":+1,"기타 입금":+1,"대출 상환":-1,"대출 이자":-1,"사업비 지출":-1};
 const KIND_LOAN = {"대출 실행":+1,"대출 상환":-1,"투자금 입금":0,"대출 이자":0,"사업비 지출":0,"기타 입금":0};
-const BANK_SRC = ["하나은행","희년함께","신축은행"];
-const MAIN_BANK = ["하나은행","신축은행"];
+
+/* 대출 정의 — 사용자가 추가/삭제 가능. 희년함께는 무이자 특수 */
+const DEFAULT_LOANS = [
+  {id:"hana", name:"하나은행", rate:4.121, type:"main"},
+  {id:"hui",  name:"희년함께", rate:0,     type:"hui"},
+  {id:"new",  name:"신축은행", rate:4.5,   type:"main"}
+];
 
 let params = {...DEFAULTS};
 let ledger = JSON.parse(JSON.stringify(DEFAULT_LEDGER));
+let loans = JSON.parse(JSON.stringify(DEFAULT_LOANS));
 let seq = 100;
+let loanSeq = 200;
+
+/* 동적 출처 리스트 — 가족 + 대출 + 임차인/기타 */
+function getSources(){
+  return ["찬희네","승민이네",...loans.map(l=>l.name),"임차인","공동·기타"];
+}
+function getBankSources(){ return loans.map(l=>l.name); }
+function getMainBankSources(){ return loans.filter(l=>l.type==="main").map(l=>l.name); }
+function getLoanByName(name){ return loans.find(l=>l.name===name); }
 
 /* 유틸 */
 const $ = s => document.querySelector(s);
@@ -620,7 +649,6 @@ function newLoanFromLedger(){
 function readParams(){
   return {
     ratio:num($("#ratio").value), totalCost:num($("#totalCost").value),
-    hanaRate:num($("#hanaRate").value), newRate:num($("#newRate").value),
     compMonth:$("#compMonth").value||DEFAULTS.compMonth,
     mPrin:num($("#mPrin").value), postYears:Number($("#postYears").value)||5,
     huiSave:num($("#huiSave").value), huiFee:num($("#huiFee").value),
@@ -630,8 +658,6 @@ function readParams(){
 function writeParams(p){
   $("#ratio").value=p.ratio;
   $("#totalCost").value=comma(p.totalCost);
-  $("#hanaRate").value=p.hanaRate;
-  $("#newRate").value=p.newRate;
   $("#compMonth").value=p.compMonth;
   $("#mPrin").value=comma(p.mPrin);
   $("#postYears").value=p.postYears;
@@ -639,6 +665,27 @@ function writeParams(p){
   $("#huiFee").value=comma(p.huiFee);
   $("#huiSaveLimit").value=comma(p.huiSaveLimit);
   syncRatioUI(); syncChips();
+}
+
+/* 대출 리스트 동적 렌더 — 희년함께 제외 (별도 카드) */
+function renderLoans(){
+  const list = loans.filter(l=>l.type==="main");
+  const html = list.map(l=>{
+    const fixed = (l.id==="hana"||l.id==="new");
+    const nameCell = fixed
+      ? `<span class="ln-label">${esc(l.name)}</span>`
+      : `<input type="text" class="ln-name" data-f="name" value="${esc(l.name)}" />`;
+    const delCell = fixed
+      ? `<span class="ln-spacer"></span>`
+      : `<button class="ln-del" data-del="${l.id}" type="button">×</button>`;
+    return `<div class="loan-row" data-loan-id="${l.id}">
+      ${nameCell}
+      <input type="text" class="ln-rate" data-f="rate" value="${l.rate}" inputmode="decimal" />
+      <span class="ln-pct">%</span>
+      ${delCell}
+    </div>`;
+  }).join("");
+  $("#loan-list").innerHTML = html || `<div style="font-style:italic;color:var(--ink-3);font-size:12px">대출이 없습니다</div>`;
 }
 
 /* 거래내역 */
@@ -650,7 +697,7 @@ function runningLedger(){
     const bs=KIND_SIGN[t.kind]||0;
     bank+=bs*a;
     let lsign=0;
-    if(BANK_SRC.indexOf(t.source)>=0) lsign=KIND_LOAN[t.kind]||0;
+    if(getBankSources().indexOf(t.source)>=0) lsign=KIND_LOAN[t.kind]||0;
     loan+=lsign*a; if(loan<0) loan=0;
     return {id:t.id, bank, loan, bs, lsign};
   });
@@ -670,7 +717,7 @@ function peakMainLoan(){
   let bal=0, mx=0;
   const events=[];
   ledger.forEach(t=>{
-    if(MAIN_BANK.indexOf(t.source)<0) return;
+    if(getMainBankSources().indexOf(t.source)<0) return;
     const a=Number(t.amount)||0;
     if(t.kind==="대출 실행") events.push({d:t.date,id:t.id,v:+a});
     else if(t.kind==="대출 상환") events.push({d:t.date,id:t.id,v:-a});
@@ -682,9 +729,9 @@ function peakMainLoan(){
 function loanInfo(){
   const today = new Date().toISOString().slice(0,10);
   const r={};
-  BANK_SRC.forEach(b=> r[b]={drawn:0, repaid:0, drawPast:0, repaidPast:0, futureDrawDate:null, firstDrawDate:null, drawCount:0, drawCountPast:0});
+  getBankSources().forEach(b=> r[b]={drawn:0, repaid:0, drawPast:0, repaidPast:0, futureDrawDate:null, firstDrawDate:null, drawCount:0, drawCountPast:0});
   ledger.forEach(t=>{
-    if(BANK_SRC.indexOf(t.source)<0) return;
+    if(getBankSources().indexOf(t.source)<0) return;
     const a=Number(t.amount)||0;
     if(t.kind==="대출 실행"){
       r[t.source].drawn+=a;
@@ -715,7 +762,8 @@ function householdTotal(name){
 /* 기성고 스케줄 렌더 */
 function renderTranches(){
   const tr=getTranches();
-  const newRate = num($("#newRate").value) || DEFAULTS.newRate;
+  const newL = loans.find(l=>l.name==="신축은행");
+  const newRate = newL ? newL.rate : 4.5;
   let cum=0;
   const html = tr.map((t,i)=>{
     const a=Number(t.amount)||0;
@@ -743,7 +791,7 @@ function renderLedger(){
   const run=runningLedger();
   const idx={}; run.forEach(r=> idx[r.id]=r);
   tb.innerHTML = st.map(t=>{
-    const srcSel=SRC.map(s=>`<option ${s===t.source?"selected":""}>${s}</option>`).join("");
+    const srcSel=getSources().map(s=>`<option ${s===t.source?"selected":""}>${s}</option>`).join("");
     const kindSel=KIND.map(k=>`<option ${k===t.kind?"selected":""}>${k}</option>`).join("");
     const r = idx[t.id] || {bank:0,loan:0,bs:0,lsign:0};
     const cls = r.bs>0 ? "in" : "out";
@@ -785,27 +833,42 @@ function refreshLedgerBalances(){
   refreshFooter();
 }
 
-/* 시뮬레이션 */
+/* 시뮬레이션 — 각 main 대출별 잔액·이자 추적 */
 function simulate(p){
-  const trans = transitionMonth() || p.compMonth;
-  const mainDelta={};
+  const mainLoans = loans.filter(l=>l.type==="main");
+  /* 대출별 월별 delta */
+  const loanDeltas = {};
+  mainLoans.forEach(l=>{ loanDeltas[l.id]={}; });
   ledger.forEach(t=>{
-    if(MAIN_BANK.indexOf(t.source)<0) return;
+    const ln = mainLoans.find(l=>l.name===t.source);
+    if(!ln) return;
     const m=monthOf(t.date), a=Number(t.amount)||0;
-    if(t.kind==="대출 실행") mainDelta[m]=(mainDelta[m]||0)+a;
-    else if(t.kind==="대출 상환") mainDelta[m]=(mainDelta[m]||0)-a;
+    if(t.kind==="대출 실행") loanDeltas[ln.id][m]=(loanDeltas[ln.id][m]||0)+a;
+    else if(t.kind==="대출 상환") loanDeltas[ln.id][m]=(loanDeltas[ln.id][m]||0)-a;
   });
+
+  /* 희년 대출 — 무이자 + 이용료 + 의무저축 */
+  const huiLoan = loans.find(l=>l.type==="hui");
   let huiOpen=null, huiPrin=0;
-  ledger.forEach(t=>{
-    if(t.source==="희년함께" && t.kind==="대출 실행"){
-      const m=monthOf(t.date);
-      if(!huiOpen || cmp(m,huiOpen)<0) huiOpen=m;
-      huiPrin += Number(t.amount)||0;
-    }
+  if(huiLoan){
+    ledger.forEach(t=>{
+      if(t.source===huiLoan.name && t.kind==="대출 실행"){
+        const m=monthOf(t.date);
+        if(!huiOpen || cmp(m,huiOpen)<0) huiOpen=m;
+        huiPrin += Number(t.amount)||0;
+      }
+    });
+  }
+
+  /* START 이전 잔액 미리 적용 */
+  const loanBal = {};
+  mainLoans.forEach(l=>{
+    loanBal[l.id]=0;
+    Object.keys(loanDeltas[l.id]).forEach(m=>{
+      if(cmp(m,START)<0) loanBal[l.id]+=loanDeltas[l.id][m];
+    });
+    if(loanBal[l.id]<0) loanBal[l.id]=0;
   });
-  let mainBal=0;
-  Object.keys(mainDelta).forEach(m=>{ if(cmp(m,START)<0) mainBal+=mainDelta[m]; });
-  if(mainBal<0) mainBal=0;
   let huiBal = (huiOpen && cmp(huiOpen,START)<=0) ? huiPrin : 0;
   let huiStarted = huiBal>0;
   let cumHuiSaveSoFar = 0;
@@ -820,34 +883,74 @@ function simulate(p){
   for(let i=0;i<=n;i++){
     const m=addMonths(START,i);
     let drew=0,reduced=0;
-    if(mainDelta[m]){
-      mainBal+=mainDelta[m]; if(mainBal<0) mainBal=0;
-      if(mainDelta[m]>0) drew=mainDelta[m]; else reduced=-mainDelta[m];
-    }
+    /* 각 대출별 delta 적용 */
+    mainLoans.forEach(l=>{
+      const d = loanDeltas[l.id][m]||0;
+      if(d){
+        loanBal[l.id]+=d; if(loanBal[l.id]<0) loanBal[l.id]=0;
+        if(d>0) drew+=d; else reduced+=-d;
+      }
+    });
     if(!huiStarted && huiOpen && m===huiOpen){ huiBal=huiPrin; huiStarted=true; }
-    const rate = cmp(m,trans)>=0 ? p.newRate : p.hanaRate;
+
+    /* 총 메인 잔액 */
+    let mainBal=0;
+    mainLoans.forEach(l=>{ mainBal+=loanBal[l.id]; });
+
+    /* phase — 첫 신축 또는 첫 main 대출 실행 시점 기준 */
+    const trans = transitionMonth() || p.compMonth;
     const phase = cmp(m,trans)<0 ? "기존" : (cmp(m,p.compMonth)<0 ? "공사" : "준공");
-    const mainInt = mainBal*rate/100/12;
-    /* 원금상환 — 준공 후부터 적용, 잔액보다 크면 잔액만큼만 */
-    const mPrinPaid = (cmp(m,p.compMonth)>=0) ? Math.min(p.mPrin, mainBal) : 0;
+
+    /* 각 대출별 이자 = balance × rate / 12, 모두 합산 */
+    let mainInt=0;
+    const intBreakdown={};
+    mainLoans.forEach(l=>{
+      const lInt = loanBal[l.id]*l.rate/100/12;
+      mainInt += lInt;
+      intBreakdown[l.id] = lInt;
+    });
+
+    /* 원금상환 — 준공 후, 잔액 비례 분배 */
+    let mPrinPaid = 0;
+    const prinBreakdown={};
+    if(cmp(m,p.compMonth)>=0 && p.mPrin>0 && mainBal>0){
+      const toPay = Math.min(p.mPrin, mainBal);
+      mainLoans.forEach(l=>{
+        if(mainBal>0 && loanBal[l.id]>0){
+          const share = (loanBal[l.id]/mainBal)*toPay;
+          prinBreakdown[l.id] = Math.min(share, loanBal[l.id]);
+        } else prinBreakdown[l.id]=0;
+      });
+      mPrinPaid = Object.values(prinBreakdown).reduce((s,v)=>s+v,0);
+    }
+
     const huiFee = huiBal>0 ? p.huiFee : 0;
     let huiSave = 0;
     if(huiBal>0 && cumHuiSaveSoFar<huiLimit){
       huiSave = Math.min(p.huiSave, huiLimit-cumHuiSaveSoFar, huiBal);
     }
     cumHuiSaveSoFar += huiSave;
+
     const monthTotal = mainInt + huiFee + huiSave + mPrinPaid;
     const chan = monthTotal*chanR, sung = monthTotal*sungR;
     cumMainI+=mainInt; cumHuiFee+=huiFee; cumHuiSave+=huiSave; cumMPrin+=mPrinPaid;
     cumT+=monthTotal; cumC+=chan; cumS+=sung;
-    rows.push({month:m,phase,mainBal,rate,mainInt,huiBal,huiFee,huiSave,mPrinPaid,
+
+    rows.push({month:m,phase,mainBal,
+               mainInt,huiBal,huiFee,huiSave,mPrinPaid,
                monthTotal,chan,sung,
-               cumMainI,cumHuiFee,cumHuiSave,cumMPrin,cumT,cumC,cumS,reduced,drew});
+               cumMainI,cumHuiFee,cumHuiSave,cumMPrin,cumT,cumC,cumS,reduced,drew,
+               loanBalSnapshot:{...loanBal}});
+
     huiBal = Math.max(0, huiBal - huiSave);
-    /* 다음 달 mainBal에 원금상환 반영 */
-    mainBal = Math.max(0, mainBal - mPrinPaid);
+    /* 원금상환 적용 (다음 달용) */
+    if(mPrinPaid>0){
+      mainLoans.forEach(l=>{
+        loanBal[l.id] = Math.max(0, loanBal[l.id] - (prinBreakdown[l.id]||0));
+      });
+    }
   }
-  return {rows, trans};
+  return {rows, trans:transitionMonth()||p.compMonth};
 }
 function summarize(rows){
   const last=rows[rows.length-1];
@@ -875,8 +978,16 @@ function summarize(rows){
 function renderScenario(p,trans){
   const peak=peakMainLoan();
   const tr=getTranches();
+  const hanaL = loans.find(l=>l.name==="하나은행");
+  const newL  = loans.find(l=>l.name==="신축은행");
+  const extras = loans.filter(l=>l.type==="main" && l.id!=="hana" && l.id!=="new");
+  const newRateTxt  = newL  ? `연 ${newL.rate}%` : "신축대출";
+  const hanaRateTxt = hanaL ? `연 ${hanaL.rate}%` : "기존 대출";
+  const extraTxt = extras.length>0
+    ? ` 추가 대출 ${extras.length}건(${extras.map(l=>`${l.name} 연 ${l.rate}%`).join(", ")}).`
+    : "";
   $("#scenario-text").innerHTML =
-    `<b>${monthKor(trans)}</b>부터 신축대출 구간(연 ${p.newRate}%, ${tr.length}차 기성고 분할), 이전은 기존(하나) 대출 구간(연 ${p.hanaRate}%). `+
+    `<b>${monthKor(trans)}</b>부터 신축대출 구간(${newRateTxt}, ${tr.length}차 기성고 분할), 이전은 기존(하나) 대출 구간(${hanaRateTxt}).${extraTxt} `+
     `신축대출 총액 <b>${korMoney(newLoanFromLedger())}</b> · 메인 대출 최대 잔액 <b>${korMoney(peak)}</b>, `+
     `<b>${monthKor(p.compMonth)}</b> 준공 가정. `+
     `분담 <b>찬희네 ${p.ratio}% : 승민이네 ${100-p.ratio}%</b>. `+
@@ -884,76 +995,86 @@ function renderScenario(p,trans){
 }
 function renderLoanCards(p){
   const L=loanInfo();
-  const tranches = getTranches();
-  /* 하나 */
-  const h=L["하나은행"];
-  let hBig, hStatus, hStatusCls;
-  if(h.drawn===0){ hBig="—"; hStatus="—"; hStatusCls="repaid"; }
-  else if(h.currentToday===0 && h.drawn>0){ hBig=korMoney(h.drawn); hStatus="상환됨"; hStatusCls="repaid"; }
-  else { hBig=korMoney(h.currentToday); hStatus="활성"; hStatusCls="active"; }
-  const hCard = `<div class="loan-card hana">
-    <div class="ln-head"><span class="ln-name">하나은행 사업자시설자금</span>
-      <span class="ln-rate">연 ${p.hanaRate}%</span></div>
-    <div class="ln-big">${hBig}</div>
-    <div class="ln-status ${hStatusCls}">${hStatus}</div>
-    <div class="ln-detail">
-      <div class="row"><span class="lab">실행 총액</span><b>${korMoney(h.drawn)}</b></div>
-      <div class="row"><span class="lab">상환 총액</span><b>${korMoney(h.repaid)}</b></div>
-      <div class="row"><span class="lab">월 이자</span><b>${h.currentToday>0?comma(h.currentToday*p.hanaRate/100/12)+"원":"—"}</b></div>
-    </div></div>`;
-  /* 희년 */
-  const hu=L["희년함께"];
-  let huBig = hu.drawn>0 ? korMoney(hu.currentToday) : "—";
-  let huStatus = hu.drawn===0 ? "—" : (hu.currentToday>0 ? "활성" : "상환됨");
-  let huStatusCls = hu.currentToday>0 ? "active" : "repaid";
-  const huCard = `<div class="loan-card hui">
-    <div class="ln-head"><span class="ln-name">희년함께 공동체주택지원</span>
-      <span class="ln-rate">무이자 + 이용료</span></div>
-    <div class="ln-big">${huBig}</div>
-    <div class="ln-status ${huStatusCls}">${huStatus}</div>
-    <div class="ln-detail">
-      <div class="row"><span class="lab">실행 총액</span><b>${korMoney(hu.drawn)}</b></div>
-      <div class="row"><span class="lab">의무저축</span><b>월 ${comma(p.huiSave)}원</b></div>
-      <div class="row"><span class="lab">저축 한도</span><b>${korMoney(p.huiSaveLimit)}</b></div>
-      <div class="row"><span class="lab">이용료</span><b>월 ${comma(p.huiFee)}원</b></div>
-    </div></div>`;
-  /* 신축 — 기성고 진행 표시 */
-  const nL=L["신축은행"];
-  const totalCount=nL.drawCount, pastCount=nL.drawCountPast;
-  let nBig, nStatus, nStatusCls;
-  if(nL.drawn===0){ nBig="—"; nStatus="실행 예정 없음"; nStatusCls="pending"; }
-  else if(pastCount===0){
-    nBig = korMoney(nL.drawn);
-    nStatus = `${totalCount}차 기성고 · 실행 예정`;
-    nStatusCls = "pending";
-  } else if(pastCount<totalCount){
-    nBig = korMoney(nL.currentToday);
-    nStatus = `기성고 ${pastCount}/${totalCount}차 실행 (진행 중)`;
-    nStatusCls = "progress";
-  } else {
-    nBig = korMoney(nL.currentToday);
-    nStatus = `전액 실행 (${totalCount}차 완료)`;
-    nStatusCls = "active";
-  }
-  /* tranche progress bar */
-  let prog="";
-  if(totalCount>0){
-    prog = `<div class="tr-prog">`;
-    for(let i=0;i<totalCount;i++) prog += `<div class="seg${i<pastCount?' done':''}"></div>`;
-    prog += `</div>`;
-  }
-  const nCard = `<div class="loan-card new">
-    <div class="ln-head"><span class="ln-name">신축대출 (기성고)</span>
-      <span class="ln-rate">연 ${p.newRate}%</span></div>
-    <div class="ln-big">${nBig}</div>
-    <div class="ln-status ${nStatusCls}">${nStatus}</div>
-    ${prog}
-    <div class="ln-detail">
-      <div class="row"><span class="lab">실행 총액</span><b>${korMoney(nL.drawn)}</b></div>
-      <div class="row"><span class="lab">분할 차수</span><b>${totalCount}회 (${pastCount}회 실행)</b></div>
-      <div class="row"><span class="lab">월 이자(전액 시)</span><b>${nL.drawn>0?comma(nL.drawn*p.newRate/100/12)+"원":"—"}</b></div>
-    </div></div>`;
-  $("#loan-cards").innerHTML = hCard + huCard + nCard;
+  let html="";
+  /* 모든 대출을 순서대로 렌더링 — 메인 대출 + 희년 */
+  loans.forEach(l=>{
+    const info = L[l.name] || {drawn:0,repaid:0,drawPast:0,repaidPast:0,currentToday:0,drawCount:0,drawCountPast:0,firstDrawDate:null,futureDrawDate:null};
+    if(l.type==="hui"){
+      let huBig = info.drawn>0 ? korMoney(info.currentToday) : "—";
+      let huStatus = info.drawn===0 ? "—" : (info.currentToday>0 ? "활성" : "상환됨");
+      let huStatusCls = info.currentToday>0 ? "active" : "repaid";
+      html += `<div class="loan-card hui">
+        <div class="ln-head"><span class="ln-name">${esc(l.name)}</span>
+          <span class="ln-rate">무이자 + 이용료</span></div>
+        <div class="ln-big">${huBig}</div>
+        <div class="ln-status ${huStatusCls}">${huStatus}</div>
+        <div class="ln-detail">
+          <div class="row"><span class="lab">실행 총액</span><b>${korMoney(info.drawn)}</b></div>
+          <div class="row"><span class="lab">의무저축</span><b>월 ${comma(p.huiSave)}원</b></div>
+          <div class="row"><span class="lab">저축 한도</span><b>${korMoney(p.huiSaveLimit)}</b></div>
+          <div class="row"><span class="lab">이용료</span><b>월 ${comma(p.huiFee)}원</b></div>
+        </div></div>`;
+      return;
+    }
+    /* 메인 대출 */
+    if(l.id==="new"){
+      /* 신축은행 — 기성고 진행 표시 */
+      const totalCount=info.drawCount, pastCount=info.drawCountPast;
+      let nBig, nStatus, nStatusCls;
+      if(info.drawn===0){ nBig="—"; nStatus="실행 예정 없음"; nStatusCls="pending"; }
+      else if(pastCount===0){
+        nBig = korMoney(info.drawn);
+        nStatus = `${totalCount}차 기성고 · 실행 예정`;
+        nStatusCls = "pending";
+      } else if(pastCount<totalCount){
+        nBig = korMoney(info.currentToday);
+        nStatus = `기성고 ${pastCount}/${totalCount}차 실행 (진행 중)`;
+        nStatusCls = "progress";
+      } else {
+        nBig = korMoney(info.currentToday);
+        nStatus = `전액 실행 (${totalCount}차 완료)`;
+        nStatusCls = "active";
+      }
+      let prog="";
+      if(totalCount>0){
+        prog = `<div class="tr-prog">`;
+        for(let i=0;i<totalCount;i++) prog += `<div class="seg${i<pastCount?' done':''}"></div>`;
+        prog += `</div>`;
+      }
+      html += `<div class="loan-card new">
+        <div class="ln-head"><span class="ln-name">${esc(l.name)} (기성고)</span>
+          <span class="ln-rate">연 ${l.rate}%</span></div>
+        <div class="ln-big">${nBig}</div>
+        <div class="ln-status ${nStatusCls}">${nStatus}</div>
+        ${prog}
+        <div class="ln-detail">
+          <div class="row"><span class="lab">실행 총액</span><b>${korMoney(info.drawn)}</b></div>
+          <div class="row"><span class="lab">분할 차수</span><b>${totalCount}회 (${pastCount}회 실행)</b></div>
+          <div class="row"><span class="lab">월 이자(전액 시)</span><b>${info.drawn>0?comma(info.drawn*l.rate/100/12)+"원":"—"}</b></div>
+        </div></div>`;
+    } else {
+      /* 하나은행 또는 추가 main 대출 — 단순 카드 */
+      let hBig, hStatus, hStatusCls;
+      if(info.drawn===0){ hBig="—"; hStatus="실행 예정 없음"; hStatusCls="pending"; }
+      else if(info.drawPast===0){
+        hBig=korMoney(info.drawn); hStatus=`실행 예정 (${info.futureDrawDate||"—"})`; hStatusCls="pending";
+      } else if(info.currentToday===0 && info.drawn>0){
+        hBig=korMoney(info.drawn); hStatus="상환됨"; hStatusCls="repaid";
+      } else { hBig=korMoney(info.currentToday); hStatus="활성"; hStatusCls="active"; }
+      const cls = (l.id==="hana") ? "hana" : "extra";
+      html += `<div class="loan-card ${cls}">
+        <div class="ln-head"><span class="ln-name">${esc(l.name)}</span>
+          <span class="ln-rate">연 ${l.rate}%</span></div>
+        <div class="ln-big">${hBig}</div>
+        <div class="ln-status ${hStatusCls}">${hStatus}</div>
+        <div class="ln-detail">
+          <div class="row"><span class="lab">실행 총액</span><b>${korMoney(info.drawn)}</b></div>
+          <div class="row"><span class="lab">상환 총액</span><b>${korMoney(info.repaid)}</b></div>
+          <div class="row"><span class="lab">월 이자</span><b>${info.currentToday>0?comma(info.currentToday*l.rate/100/12)+"원":"—"}</b></div>
+        </div></div>`;
+    }
+  });
+  $("#loan-cards").innerHTML = html;
 }
 function renderSummary(s,p){
   $("#summary-range").textContent=`${monthKor(s.first)} ~ ${monthKor(s.end)} (총 ${s.totalMonths}개월 · 공사기간 ${s.constrMonths}개월)`;
@@ -1062,12 +1183,14 @@ function renderTable(rows,p){
 
 /* ③ 대시보드 */
 function renderDashboard(p){
+  const huiL = loans.find(l=>l.type==="hui");
+  const huiName = huiL ? huiL.name : "희년함께";
   const chan=householdTotal("찬희네"), sung=householdTotal("승민이네");
   const loan=peakMainLoan();
   let etc=0;
   ledger.forEach(t=>{
     if(t.source==="공동·기타" && t.kind==="기타 입금") etc+=Number(t.amount)||0;
-    if(t.source==="희년함께" && t.kind==="대출 실행") etc+=Number(t.amount)||0;
+    if(t.source===huiName && t.kind==="대출 실행") etc+=Number(t.amount)||0;
     if(t.source==="임차인" && t.kind==="기타 입금") etc+=Number(t.amount)||0;
   });
   const raised=chan+sung+loan+etc;
@@ -1076,8 +1199,8 @@ function renderDashboard(p){
   const seg = (cls,v,lbl)=> v>0 ? `<div class="fund-seg ${cls}" style="width:${pct(v).toFixed(2)}%">${pct(v)>=10?lbl:""}</div>` : "";
   $("#fund-bar").innerHTML = seg("chan",chan,"찬희네")+seg("sung",sung,"승민이네")+seg("loan",loan,"대출")+seg("etc",etc,"기타")
     || `<div class="fund-seg loan" style="width:100%">자금 내역 없음</div>`;
-  let legend = `<span><i style="background:#B08838"></i> 찬희네 투자 <b>${korMoney(chan)}</b></span>`+
-    `<span><i style="background:#26456E"></i> 승민이네 투자 <b>${korMoney(sung)}</b></span>`+
+  let legend = `<span><i style="background:#C9A961"></i> 찬희네 투자 <b>${korMoney(chan)}</b></span>`+
+    `<span><i style="background:#003B5C"></i> 승민이네 투자 <b>${korMoney(sung)}</b></span>`+
     `<span><i style="background:#7A8194"></i> 메인 대출(최대) <b>${korMoney(loan)}</b></span>`;
   if(etc>0) legend+=`<span><i style="background:#B5AE9C"></i> 기타·희년·보증금 <b>${korMoney(etc)}</b></span>`;
   legend+=`<span>합계 <b>${korMoney(raised)}</b></span>`;
@@ -1098,28 +1221,7 @@ function renderDashboard(p){
     </div>`;
   }
   $("#hh-cards").innerHTML = card("찬희네","chan",cR,chan)+card("승민이네","sung",sR,sung);
-  $("#hh-note").innerHTML = `※ 잔여 부담액에는 대출로 충당될 부분이 포함됩니다. '지금 현금으로 더 넣어야 할 금액'은 아래 「세대 간 투자 균형」 참고.`;
-
-  const totalInv=chan+sung;
-  const chanShould=totalInv*cR, sungShould=totalInv*sR;
-  const chanDiff=chan-chanShould;
-  const thr=Math.max(10000, totalInv*0.005);
-  let verdict;
-  if(Math.abs(chanDiff)<=thr){
-    verdict=`<div class="bal-verdict ok">✓ 현재 두 세대의 투자금이 ${p.ratio}:${100-p.ratio} 비율에 거의 맞습니다.</div>`;
-  }else if(chanDiff>0){
-    verdict=`<div class="bal-verdict warn">⚠ <b>찬희네</b>가 비율 대비 <b>${korMoney(chanDiff)}</b> 더 투자한 상태입니다.<br>`+
-      `<b>승민이네</b>가 <b>${korMoney(chanDiff)}</b>를 추가 투자하면 균형이 맞춰집니다.</div>`;
-  }else{
-    verdict=`<div class="bal-verdict warn">⚠ <b>승민이네</b>가 비율 대비 <b>${korMoney(-chanDiff)}</b> 더 투자한 상태입니다.<br>`+
-      `<b>찬희네</b>가 <b>${korMoney(-chanDiff)}</b>를 추가 투자하면 균형이 맞춰집니다.</div>`;
-  }
-  $("#balance-box").innerHTML =
-    `<div class="bal-line">현재까지 두 세대 투자금 합계 <b>${korMoney(totalInv)}</b></div>`+
-    `<div class="bal-grid">`+
-      `<div>${p.ratio}:${100-p.ratio} 기준 → 찬희네 <b>${korMoney(chanShould)}</b> · 승민이네 <b>${korMoney(sungShould)}</b></div>`+
-      `<div>실제 투자금 → 찬희네 <b>${korMoney(chan)}</b> · 승민이네 <b>${korMoney(sung)}</b></div>`+
-    `</div>`+verdict;
+  $("#hh-note").innerHTML = `※ 잔여 부담액에는 대출로 충당될 부분이 포함됩니다.`;
 
   function itemCol(name,cls){
     const items=householdItems(name);
@@ -1160,7 +1262,7 @@ function renderInterestChart(rows,trans,p){
   const yOf=v=> mT+ph-v/maxI*ph;
   const half=(xOf(1)-xOf(0))/2;
   let svg="";
-  const bc={기존:"#E2DBCC",공사:"#EFE3C7",준공:"#E2EDE4"};
+  const bc={기존:"#E8DFCB",공사:"#F0E3C2",준공:"#DDE6DA"};
   phaseBands(rows,n).forEach(bd=>{
     const x1=xOf(bd.a)-(bd.a>0?half:0), x2=xOf(bd.b)+(bd.b<n-1?half:0);
     svg+=`<rect x="${x1}" y="${mT}" width="${x2-x1}" height="${ph}" fill="${bc[bd.ph]}" opacity="0.55"/>`;
@@ -1179,9 +1281,9 @@ function renderInterestChart(rows,trans,p){
   sungArea+="Z";
   let topLine="";
   rows.forEach((r,i)=> topLine+=`${i?"L":"M"}${xOf(i).toFixed(1)},${yOf(r.monthTotal).toFixed(1)} `);
-  svg+=`<path d="${sungArea}" fill="#26456E" opacity="0.82"/>`;
-  svg+=`<path d="${chanArea}" fill="#B08838" opacity="0.92"/>`;
-  svg+=`<path d="${topLine}" fill="none" stroke="#1A2B4A" stroke-width="1.4"/>`;
+  svg+=`<path d="${sungArea}" fill="#003B5C" opacity="0.88"/>`;
+  svg+=`<path d="${chanArea}" fill="#C9A961" opacity="0.95"/>`;
+  svg+=`<path d="${topLine}" fill="none" stroke="#003B5C" stroke-width="1.4"/>`;
   [{m:trans,label:"신축 1차"},{m:p.compMonth,label:"준공"}].forEach(ev=>{
     const idx=rows.findIndex(r=>r.month===ev.m);
     if(idx>=0){
@@ -1207,7 +1309,7 @@ function renderBalanceChart(rows,trans,p){
   const yOf=v=> mT+ph-v/maxB*ph;
   const half=(xOf(1)-xOf(0))/2;
   let svg="";
-  const bc={기존:"#E2DBCC",공사:"#EFE3C7",준공:"#E2EDE4"};
+  const bc={기존:"#E8DFCB",공사:"#F0E3C2",준공:"#DDE6DA"};
   phaseBands(rows,n).forEach(bd=>{
     const x1=xOf(bd.a)-(bd.a>0?half:0), x2=xOf(bd.b)+(bd.b<n-1?half:0);
     svg+=`<rect x="${x1}" y="${mT}" width="${x2-x1}" height="${ph}" fill="${bc[bd.ph]}" opacity="0.55"/>`;
@@ -1272,6 +1374,7 @@ function attachHover(svg,rows,xOf,n,mL,pw){
 /* 전체 업데이트 */
 function update(){
   params=readParams();
+  renderLoans();
   renderTranches();
   const {rows,trans}=simulate(params);
   const s=summarize(rows);
@@ -1304,7 +1407,7 @@ function fmtMoneyInput(el){
   el.value = raw? Number(raw).toLocaleString("ko-KR"):"";
 }
 
-function getState(){ return {v:13, params:readParams(), ledger}; }
+function getState(){ return {v:15, params:readParams(), ledger, loans}; }
 function encodeState(st){ try{ return btoa(encodeURIComponent(JSON.stringify(st))); }catch(e){ return ""; } }
 function decodeState(h){ try{ return JSON.parse(decodeURIComponent(atob(h))); }catch(e){ return null; } }
 function persist(){
@@ -1326,8 +1429,47 @@ function bind(){
   ["totalCost","mPrin","huiSave","huiFee","huiSaveLimit"].forEach(id=>{
     $("#"+id).addEventListener("input",()=>{ fmtMoneyInput($("#"+id)); update(); });
   });
-  ["hanaRate","newRate"].forEach(id=>$("#"+id).addEventListener("input",update));
   ["compMonth","postYears"].forEach(id=>$("#"+id).addEventListener("change",update));
+
+  /* 대출 리스트 이벤트 — 이름·금리 편집, 삭제, 추가 */
+  $("#loan-list").addEventListener("input",e=>{
+    const row=e.target.closest("[data-loan-id]"); if(!row) return;
+    const id=row.dataset.loanId, l=loans.find(x=>x.id===id);
+    if(!l) return;
+    const f=e.target.dataset.f;
+    if(f==="rate"){
+      l.rate=Number(e.target.value)||0;
+      update();
+    } else if(f==="name"){
+      const old=l.name, nw=e.target.value.trim();
+      if(!nw || nw===old) return;
+      /* 중복 체크 */
+      if(loans.some(x=>x.id!==id && x.name===nw)){ toast("같은 이름의 대출이 이미 있습니다"); e.target.value=old; return; }
+      /* ledger의 source도 동기화 */
+      ledger.forEach(t=>{ if(t.source===old) t.source=nw; });
+      l.name=nw;
+      renderLedger();
+      update();
+    }
+  });
+  $("#loan-list").addEventListener("click",e=>{
+    const id=e.target.dataset.del; if(!id) return;
+    const l=loans.find(x=>x.id===id); if(!l) return;
+    const used=ledger.filter(t=>t.source===l.name).length;
+    if(used>0 && !confirm(`${l.name} 대출의 거래내역 ${used}건도 함께 삭제됩니다. 진행할까요?`)) return;
+    loans=loans.filter(x=>x.id!==id);
+    if(used>0) ledger=ledger.filter(t=>t.source!==l.name);
+    renderLoans(); renderLedger(); update();
+    toast(`${l.name} 대출 삭제됨`);
+  });
+  $("#loan-add").addEventListener("click",()=>{
+    let baseName="새 대출", n=1;
+    while(loans.some(l=>l.name===baseName+(n>1?" "+n:""))) n++;
+    const id="custom"+(loanSeq++);
+    loans.push({id, name:baseName+(n>1?" "+n:""), rate:4.5, type:"main"});
+    renderLoans(); update();
+    toast("새 대출이 추가됐습니다. 이름·금리를 편집하세요");
+  });
   $("#ratio").addEventListener("input",()=>{ syncRatioUI(); syncChips(); update(); });
   document.querySelectorAll("#ratio-chips .chip").forEach(c=>
     c.addEventListener("click",()=>{ $("#ratio").value=c.dataset.r; syncRatioUI(); syncChips(); update(); }));
@@ -1397,9 +1539,12 @@ function bind(){
   });
 
   $("#reset").addEventListener("click",()=>{
+    if(!confirm("모든 거래내역·대출·변수가 기본값으로 돌아갑니다. 진행할까요?")) return;
     params={...DEFAULTS};
     ledger=JSON.parse(JSON.stringify(DEFAULT_LEDGER));
-    writeParams(params); renderLedger(); update();
+    loans=JSON.parse(JSON.stringify(DEFAULT_LOANS));
+    loanSeq=200;
+    writeParams(params); renderLoans(); renderLedger(); update();
     toast("기본값으로 초기화되었습니다");
   });
   $("#share").addEventListener("click",async()=>{
@@ -1420,7 +1565,15 @@ function bind(){
       ledger=data.ledger.map(t=>({amount:0,desc:"",source:"공동·기타",kind:"기타 입금",date:"2026-05-01",...t}));
       seq=ledger.length+300;
     }
-    writeParams(params); renderLedger(); update();
+    if(Array.isArray(data.loans) && data.loans.length){
+      loans = data.loans.map(l=>({rate:0, type:"main", ...l}));
+      const maxNum = loans.reduce((m,l)=>{
+        const mt = (l.id||"").match(/^custom(\d+)$/);
+        return mt ? Math.max(m, Number(mt[1])+1) : m;
+      }, 200);
+      loanSeq = maxNum;
+    }
+    writeParams(params); renderLoans(); renderLedger(); update();
     toast("시나리오를 가져왔습니다");
   });
   $("#download").addEventListener("click",async()=>{
@@ -1512,9 +1665,18 @@ function bind(){
     params={...DEFAULTS,...loaded.params};
     if(Array.isArray(loaded.ledger) && loaded.ledger.length)
       ledger=loaded.ledger.map(t=>({amount:0,desc:"",source:"공동·기타",kind:"기타 입금",date:"2026-05-01",...t}));
+    if(Array.isArray(loaded.loans) && loaded.loans.length){
+      loans = loaded.loans.map(l=>({rate:0, type:"main", ...l}));
+      const maxNum = loans.reduce((m,l)=>{
+        const mt = (l.id||"").match(/^custom(\d+)$/);
+        return mt ? Math.max(m, Number(mt[1])+1) : m;
+      }, 200);
+      loanSeq = maxNum;
+    }
     seq=ledger.length+300;
   }
   writeParams(params);
+  renderLoans();
   renderLedger();
   update();
 })();
