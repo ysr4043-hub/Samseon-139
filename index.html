@@ -116,6 +116,17 @@
   table.book thead th.c{text-align:center}
   table.book tbody td{padding:6px 7px;border-bottom:1px solid var(--line-2);vertical-align:middle}
   table.book tbody tr:last-child td{border-bottom:none}
+  table.book tbody tr.row-new td{animation:rowFlash 1.8s ease-out}
+  table.book tbody tr.row-new td.bal-cell,
+  table.book tbody tr.row-new td.lbal-cell{animation:rowFlashStrong 1.8s ease-out}
+  @keyframes rowFlash{
+    0%,40%{background:#F0E3C2;box-shadow:inset 0 0 0 2px var(--gold)}
+    100%{background:transparent;box-shadow:none}
+  }
+  @keyframes rowFlashStrong{
+    0%,40%{background:#E8D5A0}
+    100%{}
+  }
   table.book input,table.book select{padding:6px 7px;font-size:12.5px;border-radius:7px}
   .bk-date{width:138px} .bk-desc{min-width:140px} .bk-src{width:102px} .bk-kind{width:116px}
   .bk-amt{width:138px} .bk-bal{width:116px} .bk-lbal{width:116px} .bk-del{width:38px;text-align:center}
@@ -342,13 +353,18 @@
           <h3>준공 · 상환</h3>
           <div class="field"><label>준공 예정월</label>
             <input type="month" id="compMonth" value="2027-07" /></div>
-          <div class="field"><label>준공 후 월 원금상환 (신축)</label>
-            <input type="text" class="money" id="mPrin" value="0" inputmode="numeric" />
-            <div class="chips" id="mPrin-chips">
-              <button class="chip active" data-v="0">0</button>
-              <button class="chip" data-v="3000000">300만</button>
-              <button class="chip" data-v="5000000">500만</button>
-              <button class="chip" data-v="10000000">1,000만</button></div></div>
+          <div class="field"><label>찬희네 · 월 원금상환</label>
+            <input type="text" class="money" id="mPrinChan" value="0" inputmode="numeric" />
+            <div class="hint">시작 시기: 준공 후
+              <input type="text" id="mPrinStartChan" value="0" inputmode="numeric"
+                style="width:40px;display:inline-block;text-align:right;padding:2px 4px;font-size:12px;font-family:'JetBrains Mono',monospace" />
+              개월</div></div>
+          <div class="field"><label>승민이네 · 월 원금상환</label>
+            <input type="text" class="money" id="mPrinSung" value="0" inputmode="numeric" />
+            <div class="hint">시작 시기: 준공 후
+              <input type="text" id="mPrinStartSung" value="0" inputmode="numeric"
+                style="width:40px;display:inline-block;text-align:right;padding:2px 4px;font-size:12px;font-family:'JetBrains Mono',monospace" />
+              개월</div></div>
           <div class="field"><label>준공 후 시뮬레이션 기간</label>
             <select id="postYears"><option value="3">3년</option>
               <option value="5" selected>5년</option><option value="7">7년</option>
@@ -369,7 +385,7 @@
       <div class="explain">
         <b>기성고 대출</b>은 공사 진행에 따라 4~6회로 나눠 실행되는 대출입니다. 1차 실행 시 그 금액에만 이자가 발생하고,
         2차 실행 시 누적 잔액(1차+2차)에 이자가 책정 — 공사기간 동안 매월 이자가 단계적으로 증가합니다.<br>
-        ※ 여기서 편집하면 <b>거래내역의 신축은행 '대출 실행' 행과 자동 연동</b>됩니다. 차수를 추가/삭제하면 거래내역에도 반영.
+        ※ 여기서 편집하면 <b>거래내역의 신축대출 '대출 실행' 행과 자동 연동</b>됩니다. 차수를 추가/삭제하면 거래내역에도 반영.
       </div>
       <div class="tranche-wrap">
         <div class="tranche-scroll">
@@ -404,7 +420,7 @@
         <span class="out">− 출금</span>(대출 상환·이자·사업비 지출) → 통장잔액 감소.<br>
         <b>출처</b>가 은행이면 대출잔액 컬럼에 반영. <b>은행대출로 입금된 금액은 구분 "대출 실행"</b>.<br>
         <b>희년함께</b>: 의무저축 → <b>대출 상환</b> · 이용료 → <b>대출 이자</b>.
-        <b>신축은행</b>: 위 '기성고 스케줄'에서 관리 (여기에도 자동 반영).
+        <b>신축대출</b>: 위 '기성고 스케줄'에서 관리 (여기에도 자동 반영).
       </div>
       <div class="ledger-scroll">
         <table class="book">
@@ -505,7 +521,7 @@
         <table class="detail">
           <thead><tr>
             <th>월</th><th>메인 잔액</th><th>메인 이자</th>
-            <th>희년 이용료</th><th>의무저축</th>
+            <th>희년 이용료</th><th>희년 잔액<small style="font-weight:400;display:block;font-size:10px;color:var(--ink-3);margin-top:1px">(의무저축 차감)</small></th>
             <th>원금상환</th>
             <th>월 총액</th>
             <th>찬희네</th><th>승민이네</th>
@@ -515,9 +531,10 @@
       </div>
       <div class="note">
         ※ <b>메인 잔액</b>이 ▲ 표시로 늘어나는 시점이 기성고 실행월 — 이때부터 이자가 단계적으로 증가합니다.<br>
-        ※ <b>원금상환</b>은 준공 후부터 매월 발생 (변수 컨트롤의 「준공 후 월 원금상환」에서 설정). 잔액보다 크면 잔액만큼만 차감.<br>
-        ※ 의무저축은 누적 한도 도달 시 종료, 이용료는 희년 대출 잔액이 있는 동안 계속.<br>
-        ※ <b>월 총액</b> = 메인 이자 + 희년 이용료 + 의무저축 + 원금상환 — 두 가정이 매월 통장에 입금해야 할 금액.
+        ※ <b>원금상환</b>은 가정별로 자율 설정 (찬희네·승민이네 각자 월 금액 + 시작 시기). 두 가정 합계가 잔액보다 크면 잔액만큼만 차감.<br>
+        ※ <b>희년 잔액</b>: 큰 숫자는 그 달 말 잔액, 그 아래 빨간 숫자가 이번 달 의무저축 차감액. 한도 도달 후엔 「동결」.<br>
+        ※ 누계 행에서 <b>희년 잔액</b> 컬럼은 의무저축 <b>누적 차감 총액</b>을 표시.<br>
+        ※ <b>분담 계산</b>: 메인이자·희년이용료·의무저축은 분담 비율(찬:승) 적용, <b>원금상환은 가정별 입력값 그대로</b>.
       </div>
     </div>
   </div>
@@ -548,7 +565,10 @@
 const DEFAULTS = {
   ratio:60, totalCost:3300000000,
   hanaRate:4.121, newRate:4.5,
-  compMonth:"2027-07", mPrin:0, postYears:5,
+  compMonth:"2027-07",
+  mPrinChan:0, mPrinSung:0,
+  mPrinStartChan:0, mPrinStartSung:0,
+  postYears:5,
   huiSave:416000, huiFee:40000, huiSaveLimit:10000000
 };
 const START = "2026-05";
@@ -598,6 +618,11 @@ function getSources(){
 function getBankSources(){ return loans.map(l=>l.name); }
 function getMainBankSources(){ return loans.filter(l=>l.type==="main").map(l=>l.name); }
 function getLoanByName(name){ return loans.find(l=>l.name===name); }
+/* 신축은행은 id="new"로 식별. 사용자가 이름 변경해도 추적 가능 */
+function getConstructionLoanName(){
+  const l = loans.find(x=>x.id==="new");
+  return l ? l.name : "신축은행";
+}
 
 /* 유틸 */
 const $ = s => document.querySelector(s);
@@ -615,6 +640,24 @@ function addMonthsDate(date,k){
   const [y,m,d]=date.split("-").map(Number);
   let t=y*12+(m-1)+k;
   return Math.floor(t/12)+"-"+String(t%12+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+}
+function isValidDateISO(s){
+  if(!s || typeof s!=="string") return false;
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+  const d=new Date(s+"T00:00:00");
+  return !isNaN(d.getTime());
+}
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function addDaysISO(iso, days){
+  if(!isValidDateISO(iso)){
+    const d=new Date();
+    d.setDate(d.getDate()+(Number(days)||0));
+    return d.toISOString().slice(0,10);
+  }
+  const d=new Date(iso+"T00:00:00");
+  d.setDate(d.getDate()+(Number(days)||0));
+  const out=d.toISOString().slice(0,10);
+  return isValidDateISO(out) ? out : todayISO();
 }
 function monthDiff(a,b){
   let [ay,am]=a.split("-").map(Number), [by,bm]=b.split("-").map(Number);
@@ -638,7 +681,8 @@ function toast(msg){
 
 /* 기성고 헬퍼 */
 function getTranches(){
-  return ledger.filter(t=>t.source==="신축은행" && t.kind==="대출 실행")
+  const newName = getConstructionLoanName();
+  return ledger.filter(t=>t.source===newName && t.kind==="대출 실행")
                .sort((a,b)=> cmp(a.date,b.date) || cmp(a.id,b.id));
 }
 function newLoanFromLedger(){
@@ -650,7 +694,11 @@ function readParams(){
   return {
     ratio:num($("#ratio").value), totalCost:num($("#totalCost").value),
     compMonth:$("#compMonth").value||DEFAULTS.compMonth,
-    mPrin:num($("#mPrin").value), postYears:Number($("#postYears").value)||5,
+    mPrinChan:num($("#mPrinChan").value),
+    mPrinSung:num($("#mPrinSung").value),
+    mPrinStartChan:Math.max(0, Math.floor(num($("#mPrinStartChan").value))),
+    mPrinStartSung:Math.max(0, Math.floor(num($("#mPrinStartSung").value))),
+    postYears:Number($("#postYears").value)||5,
     huiSave:num($("#huiSave").value), huiFee:num($("#huiFee").value),
     huiSaveLimit:num($("#huiSaveLimit").value)
   };
@@ -659,7 +707,10 @@ function writeParams(p){
   $("#ratio").value=p.ratio;
   $("#totalCost").value=comma(p.totalCost);
   $("#compMonth").value=p.compMonth;
-  $("#mPrin").value=comma(p.mPrin);
+  $("#mPrinChan").value=comma(p.mPrinChan||0);
+  $("#mPrinSung").value=comma(p.mPrinSung||0);
+  $("#mPrinStartChan").value=p.mPrinStartChan||0;
+  $("#mPrinStartSung").value=p.mPrinStartSung||0;
   $("#postYears").value=p.postYears;
   $("#huiSave").value=comma(p.huiSave);
   $("#huiFee").value=comma(p.huiFee);
@@ -671,7 +722,8 @@ function writeParams(p){
 function renderLoans(){
   const list = loans.filter(l=>l.type==="main");
   const html = list.map(l=>{
-    const fixed = (l.id==="hana"||l.id==="new");
+    /* 하나은행만 이름 고정(이미 계약 완료). 신축은행은 추후 실제 은행명으로 변경 가능 */
+    const fixed = (l.id==="hana");
     const nameCell = fixed
       ? `<span class="ln-label">${esc(l.name)}</span>`
       : `<input type="text" class="ln-name" data-f="name" value="${esc(l.name)}" />`;
@@ -696,8 +748,18 @@ function runningLedger(){
     const a=Number(t.amount)||0;
     const bs=KIND_SIGN[t.kind]||0;
     bank+=bs*a;
+    /* 대출잔액 로직:
+       - 대출 실행: 출처가 은행일 때만 +(어느 대출인지 명확)
+       - 대출 상환: 출처 무관 -(메인대출 합계에서 차감)
+       - 단, 출처가 hui 타입 대출(희년함께)이면 의무저축이므로 메인 차감 제외
+    */
     let lsign=0;
-    if(getBankSources().indexOf(t.source)>=0) lsign=KIND_LOAN[t.kind]||0;
+    if(t.kind==="대출 실행" && getBankSources().indexOf(t.source)>=0){
+      lsign=+1;
+    } else if(t.kind==="대출 상환"){
+      const srcLoan = loans.find(l=>l.name===t.source);
+      if(!(srcLoan && srcLoan.type==="hui")) lsign=-1;
+    }
     loan+=lsign*a; if(loan<0) loan=0;
     return {id:t.id, bank, loan, bs, lsign};
   });
@@ -705,8 +767,9 @@ function runningLedger(){
 /* 금리 전환월 = 첫 신축 실행월 (기성고 첫 차수) */
 function transitionMonth(){
   let m=null;
+  const newName = getConstructionLoanName();
   ledger.forEach(t=>{
-    if(t.kind==="대출 실행" && t.source==="신축은행"){
+    if(t.kind==="대출 실행" && t.source===newName){
       const mm=monthOf(t.date);
       if(!m || cmp(mm,m)<0) m=mm;
     }
@@ -762,7 +825,7 @@ function householdTotal(name){
 /* 기성고 스케줄 렌더 */
 function renderTranches(){
   const tr=getTranches();
-  const newL = loans.find(l=>l.name==="신축은행");
+  const newL = loans.find(l=>l.id==="new");
   const newRate = newL ? newL.rate : 4.5;
   let cum=0;
   const html = tr.map((t,i)=>{
@@ -839,12 +902,23 @@ function simulate(p){
   /* 대출별 월별 delta */
   const loanDeltas = {};
   mainLoans.forEach(l=>{ loanDeltas[l.id]={}; });
+  /* 월별 상환 합계 (출처 무관, 잔액 비례 분배는 루프에서) */
+  const repayByMonth = {};
   ledger.forEach(t=>{
-    const ln = mainLoans.find(l=>l.name===t.source);
-    if(!ln) return;
     const m=monthOf(t.date), a=Number(t.amount)||0;
-    if(t.kind==="대출 실행") loanDeltas[ln.id][m]=(loanDeltas[ln.id][m]||0)+a;
-    else if(t.kind==="대출 상환") loanDeltas[ln.id][m]=(loanDeltas[ln.id][m]||0)-a;
+    if(!m || a<=0) return; /* 빈 날짜/0원 거래는 무시 — B2 방어 */
+    if(t.kind==="대출 실행"){
+      const ln = mainLoans.find(l=>l.name===t.source);
+      if(!ln) return; /* 실행인데 출처가 은행이 아니면 무시 */
+      loanDeltas[ln.id][m]=(loanDeltas[ln.id][m]||0)+a;
+    } else if(t.kind==="대출 상환"){
+      /* 출처가 hui 타입(희년함께)이면 의무저축 거래 → 메인 차감에서 제외
+         (희년 잔액은 params.huiSave로 별도 트랙에서 매월 자동 차감) */
+      const srcLoan = mainLoans.find(l=>l.name===t.source) ||
+                      loans.find(l=>l.name===t.source);
+      if(srcLoan && srcLoan.type==="hui") return;
+      repayByMonth[m]=(repayByMonth[m]||0)+a;
+    }
   });
 
   /* 희년 대출 — 무이자 + 이용료 + 의무저축 */
@@ -869,6 +943,25 @@ function simulate(p){
     });
     if(loanBal[l.id]<0) loanBal[l.id]=0;
   });
+  /* START 이전 상환도 비례 차감 (시점 순서대로) */
+  Object.keys(repayByMonth).sort(cmp).forEach(m=>{
+    if(cmp(m,START)>=0) return;
+    const repay = repayByMonth[m];
+    const total = mainLoans.reduce((s,l)=>s+loanBal[l.id], 0);
+    if(total<=0 || repay<=0) return;
+    const actual = Math.min(repay, total);
+    let assigned = 0;
+    mainLoans.forEach((l,idx)=>{
+      let take;
+      if(idx===mainLoans.length-1){
+        take = Math.min(actual-assigned, loanBal[l.id]);
+      } else {
+        take = Math.min((loanBal[l.id]/total)*actual, loanBal[l.id]);
+      }
+      loanBal[l.id] = Math.max(0, loanBal[l.id]-take);
+      assigned += take;
+    });
+  });
   let huiBal = (huiOpen && cmp(huiOpen,START)<=0) ? huiPrin : 0;
   let huiStarted = huiBal>0;
   let cumHuiSaveSoFar = 0;
@@ -883,14 +976,34 @@ function simulate(p){
   for(let i=0;i<=n;i++){
     const m=addMonths(START,i);
     let drew=0,reduced=0;
-    /* 각 대출별 delta 적용 */
+    /* 1) 대출 실행 (이번 달) — 대출별로 명확히 귀속 */
     mainLoans.forEach(l=>{
       const d = loanDeltas[l.id][m]||0;
-      if(d){
-        loanBal[l.id]+=d; if(loanBal[l.id]<0) loanBal[l.id]=0;
-        if(d>0) drew+=d; else reduced+=-d;
+      if(d>0){
+        loanBal[l.id]+=d;
+        drew+=d;
       }
     });
+    /* 2) 대출 상환 (이번 달) — 출처 무관, 잔액 비례 분배 */
+    const repayThis = repayByMonth[m]||0;
+    if(repayThis>0){
+      const totalBal = mainLoans.reduce((s,l)=>s+loanBal[l.id], 0);
+      if(totalBal>0){
+        const actual = Math.min(repayThis, totalBal);
+        let assigned = 0;
+        mainLoans.forEach((l,idx)=>{
+          let take;
+          if(idx===mainLoans.length-1){
+            take = Math.min(actual-assigned, loanBal[l.id]);
+          } else {
+            take = Math.min((loanBal[l.id]/totalBal)*actual, loanBal[l.id]);
+          }
+          loanBal[l.id] = Math.max(0, loanBal[l.id]-take);
+          assigned += take;
+        });
+        reduced += assigned;
+      }
+    }
     if(!huiStarted && huiOpen && m===huiOpen){ huiBal=huiPrin; huiStarted=true; }
 
     /* 총 메인 잔액 */
@@ -910,18 +1023,32 @@ function simulate(p){
       intBreakdown[l.id] = lInt;
     });
 
-    /* 원금상환 — 준공 후, 잔액 비례 분배 */
-    let mPrinPaid = 0;
+    /* 원금상환 — 가정별 시작 시기 + 가정별 금액. 합산을 메인 대출들에 비례 차감 */
+    const compChan = addMonths(p.compMonth, p.mPrinStartChan||0);
+    const compSung = addMonths(p.compMonth, p.mPrinStartSung||0);
+    let intendedChan = (cmp(m,compChan)>=0 && (p.mPrinChan||0)>0) ? p.mPrinChan : 0;
+    let intendedSung = (cmp(m,compSung)>=0 && (p.mPrinSung||0)>0) ? p.mPrinSung : 0;
+    let prinChan = intendedChan, prinSung = intendedSung;
+    /* 잔액이 의도 합계보다 작으면 의도 비율대로 축소 (각자가 가능한 만큼만 갚음) */
+    const intendedTotal = intendedChan + intendedSung;
+    if(intendedTotal > mainBal){
+      if(intendedTotal>0){
+        prinChan = intendedChan * mainBal / intendedTotal;
+        prinSung = intendedSung * mainBal / intendedTotal;
+      } else { prinChan=0; prinSung=0; }
+    }
+    let mPrinPaid = prinChan + prinSung;
     const prinBreakdown={};
-    if(cmp(m,p.compMonth)>=0 && p.mPrin>0 && mainBal>0){
-      const toPay = Math.min(p.mPrin, mainBal);
+    if(mPrinPaid>0 && mainBal>0){
       mainLoans.forEach(l=>{
-        if(mainBal>0 && loanBal[l.id]>0){
-          const share = (loanBal[l.id]/mainBal)*toPay;
+        if(loanBal[l.id]>0){
+          const share = (loanBal[l.id]/mainBal)*mPrinPaid;
           prinBreakdown[l.id] = Math.min(share, loanBal[l.id]);
         } else prinBreakdown[l.id]=0;
       });
       mPrinPaid = Object.values(prinBreakdown).reduce((s,v)=>s+v,0);
+    } else {
+      mainLoans.forEach(l=>{ prinBreakdown[l.id]=0; });
     }
 
     const huiFee = huiBal>0 ? p.huiFee : 0;
@@ -931,13 +1058,20 @@ function simulate(p){
     }
     cumHuiSaveSoFar += huiSave;
 
-    const monthTotal = mainInt + huiFee + huiSave + mPrinPaid;
-    const chan = monthTotal*chanR, sung = monthTotal*sungR;
+    /* 분담 계산:
+       - 이자·이용료·의무저축은 60:40 분담
+       - 원금상환은 가정별 입력값 그대로
+    */
+    const sharedTotal = mainInt + huiFee + huiSave;
+    const monthTotal = sharedTotal + mPrinPaid;
+    const chan = sharedTotal*chanR + prinChan;
+    const sung = sharedTotal*sungR + prinSung;
     cumMainI+=mainInt; cumHuiFee+=huiFee; cumHuiSave+=huiSave; cumMPrin+=mPrinPaid;
     cumT+=monthTotal; cumC+=chan; cumS+=sung;
 
     rows.push({month:m,phase,mainBal,
                mainInt,huiBal,huiFee,huiSave,mPrinPaid,
+               prinChan,prinSung,
                monthTotal,chan,sung,
                cumMainI,cumHuiFee,cumHuiSave,cumMPrin,cumT,cumC,cumS,reduced,drew,
                loanBalSnapshot:{...loanBal}});
@@ -956,8 +1090,11 @@ function summarize(rows){
   const last=rows[rows.length-1];
   let peak=0;
   let cTotal=0,cChan=0,cSung=0,cMainI=0,cHuiFee=0,cHuiSave=0,cMPrin=0,cMonths=0;
+  let tPrinChan=0,tPrinSung=0;
   rows.forEach(r=>{
     if(r.monthTotal>peak) peak=r.monthTotal;
+    tPrinChan += r.prinChan||0;
+    tPrinSung += r.prinSung||0;
     if(r.phase!=="준공"){
       cTotal+=r.monthTotal; cChan+=r.chan; cSung+=r.sung;
       cMainI+=r.mainInt; cHuiFee+=r.huiFee; cHuiSave+=r.huiSave; cMPrin+=r.mPrinPaid;
@@ -967,6 +1104,7 @@ function summarize(rows){
   return {
     total:last.cumT, chan:last.cumC, sung:last.cumS,
     mainInt:last.cumMainI, huiFee:last.cumHuiFee, huiSave:last.cumHuiSave, mPrin:last.cumMPrin,
+    mPrinChan:tPrinChan, mPrinSung:tPrinSung,
     constrTotal:cTotal, constrChan:cChan, constrSung:cSung,
     constrMainI:cMainI, constrHuiFee:cHuiFee, constrHuiSave:cHuiSave, constrMPrin:cMPrin,
     constrMonths:cMonths, totalMonths:rows.length,
@@ -978,8 +1116,8 @@ function summarize(rows){
 function renderScenario(p,trans){
   const peak=peakMainLoan();
   const tr=getTranches();
-  const hanaL = loans.find(l=>l.name==="하나은행");
-  const newL  = loans.find(l=>l.name==="신축은행");
+  const hanaL = loans.find(l=>l.id==="hana");
+  const newL  = loans.find(l=>l.id==="new");
   const extras = loans.filter(l=>l.type==="main" && l.id!=="hana" && l.id!=="new");
   const newRateTxt  = newL  ? `연 ${newL.rate}%` : "신축대출";
   const hanaRateTxt = hanaL ? `연 ${hanaL.rate}%` : "기존 대출";
@@ -1093,20 +1231,20 @@ function renderSummary(s,p){
   $("#s-chan-c").textContent=korMoney(s.constrChan);
   $("#s-chan-tm").textContent="("+s.totalMonths+"개월)";
   $("#s-chan-t").textContent=korMoney(s.chan);
-  $("#s-chan-sub").textContent=`${p.ratio}% 분담`;
+  $("#s-chan-sub").textContent=`이자·이용료·의무저축 ${p.ratio}% 분담 + 원금상환 직접 입력`;
   $("#s-chan-br").innerHTML =
     `<div class="br-row"><span>메인 이자 (×${p.ratio}%)</span><b>${korMoney(s.mainInt*cR)}</b></div>`+
-    `<div class="br-row"><span>원금상환 (×${p.ratio}%)</span><b>${korMoney(s.mPrin*cR)}</b></div>`+
+    `<div class="br-row"><span>원금상환 (직접)</span><b>${korMoney(s.mPrinChan)}</b></div>`+
     `<div class="br-row"><span>희년 이용료 (×${p.ratio}%)</span><b>${korMoney(s.huiFee*cR)}</b></div>`+
     `<div class="br-row"><span>의무저축 (×${p.ratio}%)</span><b>${korMoney(s.huiSave*cR)}</b></div>`;
   $("#s-sung-cm").textContent="("+s.constrMonths+"개월)";
   $("#s-sung-c").textContent=korMoney(s.constrSung);
   $("#s-sung-tm").textContent="("+s.totalMonths+"개월)";
   $("#s-sung-t").textContent=korMoney(s.sung);
-  $("#s-sung-sub").textContent=`${100-p.ratio}% 분담`;
+  $("#s-sung-sub").textContent=`이자·이용료·의무저축 ${100-p.ratio}% 분담 + 원금상환 직접 입력`;
   $("#s-sung-br").innerHTML =
     `<div class="br-row"><span>메인 이자 (×${100-p.ratio}%)</span><b>${korMoney(s.mainInt*sR)}</b></div>`+
-    `<div class="br-row"><span>원금상환 (×${100-p.ratio}%)</span><b>${korMoney(s.mPrin*sR)}</b></div>`+
+    `<div class="br-row"><span>원금상환 (직접)</span><b>${korMoney(s.mPrinSung)}</b></div>`+
     `<div class="br-row"><span>희년 이용료 (×${100-p.ratio}%)</span><b>${korMoney(s.huiFee*sR)}</b></div>`+
     `<div class="br-row"><span>의무저축 (×${100-p.ratio}%)</span><b>${korMoney(s.huiSave*sR)}</b></div>`;
   $("#s-mainInt").textContent=korMoney(s.mainInt);
@@ -1148,12 +1286,22 @@ function renderTable(rows,p){
     let mk="";
     if(r.drew>0) mk=` <span class="mk up">▲${comma(r.drew)}</span>`;
     else if(r.reduced>0) mk=` <span class="mk down">▼${comma(r.reduced)}</span>`;
+    /* 희년 잔액 셀: 잔액 + 이번 달 의무저축 차감 표시.
+       잔액 0: '—', 한도 도달로 차감 0이지만 잔액 남음: '동결' */
+    let huiCell;
+    if(r.huiBal<=0){
+      huiCell = "—";
+    } else if(r.huiSave>0){
+      huiCell = `${comma(r.huiBal)}<br><small style="font-size:10px;color:var(--red);font-weight:500">−${comma(r.huiSave)}</small>`;
+    } else {
+      huiCell = `${comma(r.huiBal)}<br><small style="font-size:10px;color:var(--ink-3);font-style:italic">동결</small>`;
+    }
     html+=`<tr class="ph-${ph}">`+
       `<td>${monthKor(r.month)} <span class="tag ${ph}">${ph}</span></td>`+
       `<td>${comma(r.mainBal)}${mk}</td>`+
       `<td>${comma(r.mainInt)}</td>`+
       `<td>${r.huiFee?comma(r.huiFee):"—"}</td>`+
-      `<td>${r.huiSave?comma(r.huiSave):"—"}</td>`+
+      `<td>${huiCell}</td>`+
       `<td>${r.mPrinPaid?comma(r.mPrinPaid):"—"}</td>`+
       `<td>${comma(r.monthTotal)}</td>`+
       `<td class="chan-col">${comma(r.chan)}</td>`+
@@ -1374,7 +1522,6 @@ function attachHover(svg,rows,xOf,n,mL,pw){
 /* 전체 업데이트 */
 function update(){
   params=readParams();
-  renderLoans();
   renderTranches();
   const {rows,trans}=simulate(params);
   const s=summarize(rows);
@@ -1398,8 +1545,6 @@ function syncRatioUI(){
 function syncChips(){
   const rv=num($("#ratio").value);
   document.querySelectorAll("#ratio-chips .chip").forEach(c=>c.classList.toggle("active",Number(c.dataset.r)===rv));
-  const mv=num($("#mPrin").value);
-  document.querySelectorAll("#mPrin-chips .chip").forEach(c=>c.classList.toggle("active",Number(c.dataset.v)===mv));
 }
 function updateHints(p){ $("#totalCost-h").textContent="= "+korMoney(p.totalCost); }
 function fmtMoneyInput(el){
@@ -1426,30 +1571,47 @@ function setTab(name){
 
 function bind(){
   document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
-  ["totalCost","mPrin","huiSave","huiFee","huiSaveLimit"].forEach(id=>{
+  ["totalCost","mPrinChan","mPrinSung","huiSave","huiFee","huiSaveLimit"].forEach(id=>{
     $("#"+id).addEventListener("input",()=>{ fmtMoneyInput($("#"+id)); update(); });
+  });
+  ["mPrinStartChan","mPrinStartSung"].forEach(id=>{
+    $("#"+id).addEventListener("input",()=>{
+      /* 0 이상 정수만 허용 */
+      const v = Math.max(0, Math.floor(num($("#"+id).value)));
+      $("#"+id).value = v;
+      update();
+    });
   });
   ["compMonth","postYears"].forEach(id=>$("#"+id).addEventListener("change",update));
 
-  /* 대출 리스트 이벤트 — 이름·금리 편집, 삭제, 추가 */
+  /* 대출 리스트 이벤트 — rate는 input(즉시), name은 change(blur 시) */
   $("#loan-list").addEventListener("input",e=>{
     const row=e.target.closest("[data-loan-id]"); if(!row) return;
     const id=row.dataset.loanId, l=loans.find(x=>x.id===id);
     if(!l) return;
-    const f=e.target.dataset.f;
-    if(f==="rate"){
+    if(e.target.dataset.f==="rate"){
       l.rate=Number(e.target.value)||0;
       update();
-    } else if(f==="name"){
+    }
+    /* name은 input 이벤트로 처리 안 함 — DOM 재생성 방지 */
+  });
+  $("#loan-list").addEventListener("change",e=>{
+    const row=e.target.closest("[data-loan-id]"); if(!row) return;
+    const id=row.dataset.loanId, l=loans.find(x=>x.id===id);
+    if(!l) return;
+    if(e.target.dataset.f==="name"){
       const old=l.name, nw=e.target.value.trim();
-      if(!nw || nw===old) return;
-      /* 중복 체크 */
-      if(loans.some(x=>x.id!==id && x.name===nw)){ toast("같은 이름의 대출이 이미 있습니다"); e.target.value=old; return; }
+      if(!nw){ e.target.value=old; return; }
+      if(nw===old) return;
+      if(loans.some(x=>x.id!==id && x.name===nw)){
+        toast("같은 이름의 대출이 이미 있습니다");
+        e.target.value=old;
+        return;
+      }
       /* ledger의 source도 동기화 */
       ledger.forEach(t=>{ if(t.source===old) t.source=nw; });
       l.name=nw;
-      renderLedger();
-      update();
+      renderLoans(); renderLedger(); update();
     }
   });
   $("#loan-list").addEventListener("click",e=>{
@@ -1468,13 +1630,18 @@ function bind(){
     const id="custom"+(loanSeq++);
     loans.push({id, name:baseName+(n>1?" "+n:""), rate:4.5, type:"main"});
     renderLoans(); update();
-    toast("새 대출이 추가됐습니다. 이름·금리를 편집하세요");
+    /* 새 대출 이름 input 자동 포커스 — 사용자가 바로 입력 시작 */
+    setTimeout(()=>{
+      const row=document.querySelector(`[data-loan-id="${id}"]`);
+      if(!row) return;
+      const nameInput=row.querySelector('input[data-f="name"]');
+      if(nameInput){ try{ nameInput.focus(); nameInput.select(); }catch(e){} }
+    }, 50);
+    toast("새 대출이 추가됐습니다. 이름을 입력하세요");
   });
   $("#ratio").addEventListener("input",()=>{ syncRatioUI(); syncChips(); update(); });
   document.querySelectorAll("#ratio-chips .chip").forEach(c=>
     c.addEventListener("click",()=>{ $("#ratio").value=c.dataset.r; syncRatioUI(); syncChips(); update(); }));
-  document.querySelectorAll("#mPrin-chips .chip").forEach(c=>
-    c.addEventListener("click",()=>{ $("#mPrin").value=comma(Number(c.dataset.v)); syncChips(); update(); }));
 
   /* 기성고 스케줄 편집 → 거래내역 자동 연동 */
   const trBody=$("#tranche-body");
@@ -1506,7 +1673,7 @@ function bind(){
       nextAmt=Number(last.amount)||0;
     }
     ledger.push({id:"X"+(seq++), date:nextDate, desc:`신축대출 기성고 ${tr.length+1}차`,
-                 source:"신축은행", kind:"대출 실행", amount:nextAmt});
+                 source:getConstructionLoanName(), kind:"대출 실행", amount:nextAmt});
     renderLedger(); update(); toast(`${tr.length+1}차 기성고가 추가되었습니다`);
   });
 
@@ -1533,9 +1700,26 @@ function bind(){
     renderLedger(); update(); toast("거래가 삭제되었습니다");
   });
   $("#add-txn").addEventListener("click",()=>{
-    const today=new Date().toISOString().slice(0,10);
-    ledger.push({id:"X"+(seq++), date:today, desc:"", source:"찬희네", kind:"투자금 입금", amount:0});
-    renderLedger(); update(); toast("새 거래가 추가되었습니다");
+    /* 새 거래 날짜 = ledger의 유효한 최대 날짜 + 1일. 없으면 오늘. — B2 방어 */
+    let maxDate=null;
+    ledger.forEach(t=>{
+      if(isValidDateISO(t.date) && (!maxDate || cmp(t.date,maxDate)>0)) maxDate=t.date;
+    });
+    const newDate = maxDate ? addDaysISO(maxDate, 1) : todayISO();
+    const newId="X"+(seq++);
+    ledger.push({id:newId, date:newDate, desc:"", source:"찬희네", kind:"투자금 입금", amount:0});
+    renderLedger(); update();
+    /* 새 행으로 스크롤 + 시각적 강조 + 날짜 input 포커스 */
+    setTimeout(()=>{
+      const row=document.querySelector(`tr[data-id="${newId}"]`);
+      if(!row) return;
+      row.classList.add("row-new");
+      row.scrollIntoView({behavior:"smooth", block:"center"});
+      const dateInput=row.querySelector('input[data-f="date"]');
+      if(dateInput){ try{ dateInput.focus(); dateInput.select(); }catch(e){} }
+      setTimeout(()=>{ row.classList.remove("row-new"); }, 1800);
+    }, 50);
+    toast("새 거래가 추가되었습니다 — 날짜·내용·금액을 입력하세요");
   });
 
   $("#reset").addEventListener("click",()=>{
@@ -1561,6 +1745,15 @@ function bind(){
     const data=decodeState(hash);
     if(!data || !data.params){ toast("올바른 시나리오 링크가 아닙니다"); return; }
     params={...DEFAULTS,...data.params};
+    /* 마이그레이션: 구버전 mPrin → 가정별 분배 */
+    if(data.params.mPrin!==undefined && data.params.mPrinChan===undefined && data.params.mPrinSung===undefined){
+      const oldMPrin = Number(data.params.mPrin)||0;
+      const r = (Number(data.params.ratio)||60)/100;
+      params.mPrinChan = Math.round(oldMPrin * r);
+      params.mPrinSung = Math.round(oldMPrin * (1-r));
+      params.mPrinStartChan = 0;
+      params.mPrinStartSung = 0;
+    }
     if(Array.isArray(data.ledger) && data.ledger.length){
       ledger=data.ledger.map(t=>({amount:0,desc:"",source:"공동·기타",kind:"기타 입금",date:"2026-05-01",...t}));
       seq=ledger.length+300;
@@ -1663,6 +1856,15 @@ function bind(){
   }
   if(loaded && loaded.params){
     params={...DEFAULTS,...loaded.params};
+    /* 마이그레이션: 구버전 mPrin → 가정별 mPrinChan/Sung 자동 분배 */
+    if(loaded.params.mPrin!==undefined && loaded.params.mPrinChan===undefined && loaded.params.mPrinSung===undefined){
+      const oldMPrin = Number(loaded.params.mPrin)||0;
+      const r = (Number(loaded.params.ratio)||60)/100;
+      params.mPrinChan = Math.round(oldMPrin * r);
+      params.mPrinSung = Math.round(oldMPrin * (1-r));
+      params.mPrinStartChan = 0;
+      params.mPrinStartSung = 0;
+    }
     if(Array.isArray(loaded.ledger) && loaded.ledger.length)
       ledger=loaded.ledger.map(t=>({amount:0,desc:"",source:"공동·기타",kind:"기타 입금",date:"2026-05-01",...t}));
     if(Array.isArray(loaded.loans) && loaded.loans.length){
