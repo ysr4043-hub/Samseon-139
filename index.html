@@ -1732,8 +1732,15 @@ function bind(){
     toast("기본값으로 초기화되었습니다");
   });
   $("#share").addEventListener("click",async()=>{
-    const url=location.origin+location.pathname+"#"+encodeState(getState());
-    try{ await navigator.clipboard.writeText(url); toast("시나리오 링크가 복사되었습니다"); }
+    /* 배포 URL — 로컬에서 열렸어도 카톡 공유 가능한 GitHub Pages URL을 자동 사용 */
+    const SHARE_BASE = "https://ysr4043-hub.github.io/Samseon-139/";
+    const isLocal = (location.protocol==="file:" ||
+                     location.hostname==="localhost" ||
+                     location.hostname==="127.0.0.1" ||
+                     location.hostname==="");
+    const base = isLocal ? SHARE_BASE : (location.origin + location.pathname);
+    const url = base + "#" + encodeState(getState());
+    try{ await navigator.clipboard.writeText(url); toast("시나리오 링크가 복사되었습니다 (카톡 공유 가능)"); }
     catch(e){ prompt("아래 링크를 복사하세요:",url); }
   });
   $("#import").addEventListener("click",()=>{
